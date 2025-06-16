@@ -1,8 +1,18 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --off-white: #f8f8f8;
+  --background:var(--off-white);
+  --static-background: var(--background); 
+  --black: #171717;
+  --foreground: var(--primary-500);
+  --primary-200: #ACD3FF;
+  --primary-300: #105BDC;
+  --primary-400: #0A4FBD;
+  --primary-500: #173EB4;
+  --background-gradient: radial-gradient(circle at 10% 10%, var(--primary-300) 0%, var(--primary-500) 100%);
+
 }
 
 @theme inline {
@@ -12,15 +22,52 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin:0;
+  overflow:hidden;
 }
 
-body {
-  background: var(--background);
+.prose-blue {
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
 }
+
+.static-container {
+  padding: 1rem;
+  height: calc(100vh);
+  background-image: var(--background-gradient);
+}
+.static-container--inner {
+  height: 100%;
+  border-radius: 1rem;
+  background: var(--static-background);
+  color: var(--foreground);
+}
+
+.nav-container {
+  position: relative;
+  z-index: 10;
+}
+
+.page-content {
+  position: absolute;
+  inset: 10px -1rem;
+  inset: 0;
+ /* overflow-y:auto; */
+ padding-top: 8rem;
+ padding-inline: 3rem;
+}
+
+.circleLogo {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  background: var(--primary-400);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+}
+
+
