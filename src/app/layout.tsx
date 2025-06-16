@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 import NavLinks from './ui/navLinks';
 import Link from 'next/link';
@@ -12,9 +13,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <div className="static-container">
-          <div
-            className="static-container--inner py-4 px-8 relative"
-          >
+          <div className="static-container--inner py-4 px-8 relative">
             <div className="nav-container flex justify-between items-center">
               <Link href="/">
                 <div className={`circleLogo ${logo_font.className}`}>
@@ -24,7 +23,10 @@ export default function RootLayout({
 
               <NavLinks />
             </div>
-            <div className="page-content">{children}</div>
+            <div className="page-content">
+              {children}
+              <Analytics />
+            </div>
           </div>
         </div>
       </body>
