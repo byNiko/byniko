@@ -36,6 +36,9 @@ importers:
         specifier: ^19.0.0
         version: 19.1.0(react@19.1.0)
     devDependencies:
+      '@contentful/rich-text-types':
+        specifier: ^17.0.1
+        version: 17.0.1
       '@eslint/eslintrc':
         specifier: ^3
         version: 3.3.1
