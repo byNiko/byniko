@@ -20,10 +20,6 @@ type PortfolioPageSkeleton = EntrySkeletonType<
   'portfolioPage'
 >;
 
-
-
-
-
 export const getPortfolioItem = async ( slug: string ) => {
 	const entries = await client.getEntries({
     content_type: 'portfolioPage',
