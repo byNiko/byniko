@@ -2,7 +2,26 @@ import { subfont, logo_font } from './ui/fonts';
 import styles from './ui/home.module.css';
 import './ui/home.css';
 
-export default function Home() {
+import type { Metadata, ResolvingMetadata } from 'next';
+
+type Props = {
+  params: Promise<{ id: string, params: object }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  // read route params
+  const paramsData = await params;
+  console.log('id', paramsData);
+  return {
+    title: params,
+  };
+}
+
+export default function Home({ params, searchParams }: Props) {
   return (
     <div className="flex flex-col items-center justify-items-center">
       <main className="flex flex-col gap-[2px]  items-center">

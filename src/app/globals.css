@@ -62,7 +62,7 @@ body {
   border-radius: 50%;
   width: 100px;
   height: 100px;
-  background: var(--primary-400);
+  background: var(--primary-500);
   color: white;
   display: flex;
   justify-content: center;
@@ -71,3 +71,26 @@ body {
 }
 
 
+/** scrollbar **/
+
+.scrollbar-custom {
+  scrollbar-width: thin;
+  scrollbar-color: #bbb transparent;
+}
+.scrollbar-custom::-webkit-scrollbar {
+  width: 8px;
+  background: transparent;
+}
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background: #bbb;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.scrollbar-custom:hover::-webkit-scrollbar-thumb {
+  opacity: 1;
+  background: #888;
+}
+.scrollbar-custom::-webkit-scrollbar-thumb:active {
+  background: #555;
+}
