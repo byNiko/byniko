@@ -1,4 +1,4 @@
-import { BLOCKS, MARKS } from '@contentful/rich-text-types';
+import { BLOCKS } from '@contentful/rich-text-types';
 import { Options } from '@contentful/rich-text-react-renderer';
 import Image from 'next/image';
 

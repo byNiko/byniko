@@ -1,38 +1,42 @@
 import { getPortfolioItem } from '@/lib/contentful';
+
+import { Document } from '@contentful/rich-text-types';
 import { renderOptions } from '../../../components/rich-text/renderOptions';
 
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 
 import {
-  PortfolioPageEntry,
-  PortfolioPageFields,
+  PortfolioPageFields
 } from '../../../../declarations';
 import { body_font } from '../../ui/fonts';
 
 import { notFound } from 'next/navigation';
 
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const item = await getPortfolioItem(params.slug);
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const item = await getPortfolioItem(slug);
 
   return {
-    title: item.fields.title,
-    description: item.fields.summary || '',
+    title: item.fields.title
   };
 }
 
-
 export default async function PortfolioPage({
-  params
+  params,
 }: {
-    params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const post = await getPortfolioItem(params.slug);
+  const { slug } = await params;
+  const post = await getPortfolioItem(slug);
   if (!post) return notFound();
 
   const { title, body } = post.fields as PortfolioPageFields;
-  console.log(body);
-  const parsed = await documentToReactComponents(body, renderOptions);
+  const parsed = await documentToReactComponents(body as Document, renderOptions);
 
   return (
     <div className="container mx-auto max-w-2xl xl:max-w-3xl">
