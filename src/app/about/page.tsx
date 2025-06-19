@@ -5,7 +5,7 @@ export default function About() {
 
   return (
 
-      <div className="container mx-auto max-w-2xl xl:max-w-3xl ">
+      <div className="container mx-auto max-w-2xl xl:max-w-4xl ">
         <div className={`flex flex-col ${body_font.className} text-xl`}>
           <h2 className={`font-extrabold text-4xl mb-4`}>We speak artist.</h2>
           <div className="prose prose-2xl prose-blue">

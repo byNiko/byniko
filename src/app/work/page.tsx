@@ -8,7 +8,7 @@ import Link from 'next/link';
 export default async function Work() {
   const pages = await getAllPortfolioItems();
   return (
-    <div className="container mx-auto max-w-2xl xl:max-w-3xl">
+    <div className="container mx-auto max-w-2xl lg:max-w-4xl">
       <div className={`flex flex-col ${body_font.className} text-xl`}>
         <h2 className="font-extrabold text-4xl mb-4">Our Work.</h2>
         <div className="prose prose-2xl prose-blue">
