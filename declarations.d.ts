@@ -8,26 +8,9 @@ export type PortfolioPageFields = {
   body?: Document;
   slug: string;
   mainImage?: Asset;
-  fields: {
-    slug: string;
-    title: string;
-    mainImage: {
-      fields: {
-        file: {
-          url: string;
-        };
-      };
-    };
-  };
-
+  gallery?: Array<Asset>;
+  servicesList?: Array<string>;
   contentTypeId: string;
-  image: {
-    fields: {
-      file: {
-        url: string;
-      };
-    };
-  };
 };
 
 export type PortfolioPageEntry = Entry<PortfolioPageFields>;

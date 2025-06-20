@@ -1,30 +1,9 @@
 // components/ContentfulImage.tsx (or .jsx)
 import Image from 'next/image';
-
-// Define the shape of the Contentful asset data we expect
-interface ContentfulAsset {
-  fields: {
-    title: string;
-    description?: string;
-    file: {
-      url: string;
-      details: {
-        image: {
-          width: number;
-          height: number;
-        };
-      };
-      contentType: string;
-      fileName: string;
-    };
-  };
-  sys: {
-    id: string;
-  };
-}
+import { Asset } from 'contentful';
 
 interface ContentfulImageProps {
-  asset: ContentfulAsset;
+  asset: Asset;
   alt?: string; // Optional alt text, defaults to asset.fields.title
   className?: string;
   priority?: boolean; // For LCP images
@@ -44,10 +23,12 @@ const ContentfulImage: React.FC<ContentfulImageProps> = ({
   }
 
   const imageUrl = `https:${asset.fields.file.url}`;
-  const imageWidth = asset.fields.file.details.image.width;
-  const imageHeight = asset.fields.file.details.image.height;
+  const file = asset.fields.file;
+  const details = file.details as { image?: { width: number; height: number } };
+  const imageWidth = details.image?.width || 0;
+  const imageHeight = details.image?.height || 0;
   const imageAlt =
-    alt || asset.fields.description || asset.fields.title || 'Image';
+    alt || getLocalizedString(asset.fields.description) || getLocalizedString(asset.fields.title )|| 'Image';
 
   return (
     <Image
@@ -62,5 +43,14 @@ const ContentfulImage: React.FC<ContentfulImageProps> = ({
     />
   );
 };
+
+function getLocalizedString(
+  field: string | { [x: string]: string | undefined } | undefined,
+): string {
+  if (!field) return '';
+  if (typeof field === 'string') return field;
+  // Return the first non-empty value
+  return Object.values(field).find(Boolean) || '';
+}
 
 export default ContentfulImage;
