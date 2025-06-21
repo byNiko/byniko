@@ -1,8 +1,5 @@
-import { Analytics } from '@vercel/analytics/next';
 import { Metadata } from 'next';
-import '../ui/globals.css';
-import Header from '../components/SiteHeader';
-
+import '../../ui/globals.css';
 
 export const metadata: Metadata = {
   title: {
@@ -36,19 +33,5 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body>
-        <div className="static-container">
-          <div className="static-container--inner py-4  relative">
-            <div id="scroll-container" className="scrollbar-custom">
-              <Header />
-              <div className="page-content">{children}</div>
-              <Analytics />
-            </div>
-          </div>
-        </div>
-      </body>
-    </html>
-  );
+  return <div className="page-content">{children}</div>;
 }

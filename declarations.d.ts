@@ -13,6 +13,14 @@ export type PortfolioPageFields = {
   contentTypeId: string;
 };
 
+export type PageFields = {
+  sys: string;
+  title: string;
+  body?: Document;
+  slug: string;
+  contentTypeId: string;
+};
+
 export type PortfolioPageEntry = Entry<PortfolioPageFields>;
 type PortfolioPageSkeleton = EntrySkeletonType<
   PortfolioPageFields,
