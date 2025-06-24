@@ -1,8 +1,10 @@
+'use client';
 import Link from 'next/link';
 import { logo_font } from '../ui/fonts';
-import NavLinks from '../ui/navLinks';
+import NavLinksWrapper from './NavLinksWrapper';
 
 export default function SiteHeader() {
+
 	return (
     <header className="site-header">
       <nav className="nav-container flex justify-between items-center">
@@ -11,8 +13,7 @@ export default function SiteHeader() {
             BN<span>.</span>
           </div>
         </Link>
-
-        <NavLinks />
+        <NavLinksWrapper />
       </nav>
     </header>
   );

@@ -9,12 +9,12 @@ export default function Home() {
       <main className="flex flex-col gap-[2px]  items-center">
         <div className={`${styles.masthead}`}>
           <h1
-            className={`uppercase text-9xl ${logo_font.className} antialiased drop-shadow-lg drop-shadow-cyan-500`}
+            className={`uppercase  ${logo_font.className} antialiased drop-shadow-lg drop-shadow-cyan-500`}
           >
             byNiko.
           </h1>
           <p
-            className={`text-center text-2xl ${subfont.className} antialiased `}
+            className={`text-center-old ${styles.fluid_text__subtitle} ${subfont.className} antialiased `}
           >
             website & brand development for the arts
           </p>

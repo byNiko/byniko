@@ -28,6 +28,11 @@ body {
   overflow:hidden;
 }
 
+.fluid-text--masthead {
+  font-size: clamp(1rem, 2vw, 1.5rem);
+
+}
+
 .prose-blue {
   color: var(--foreground);
 }
@@ -54,7 +59,7 @@ body {
  /* overflow-y:auto; */
  padding-top: 4rem;
 }
-
+/* 
 .circleLogo {
   border-radius: 50%;
   width: 100px;
@@ -65,6 +70,21 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 2rem;
+} */
+
+.circleLogo {
+  background: var(--primary-500);
+  color: #fff;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  width: clamp(50px, 10cqw, 40px);
+  height: clamp(50px, 10cqw, 40px);
+  font-size:1.5cqw;
+  display: flex;
+  container-type: inline-size;
+  text-shadow: 0 0 3px blue;
+  box-shadow: 2px 2px 5px #ccc;
 }
 
 
@@ -73,9 +93,12 @@ body {
 .scrollbar-custom {
   max-height: 100%;
    overflow-Y: auto;
-  padding-inline: 3rem;
+  padding-inline: 1rem;
   scrollbar-width: thin;
   scrollbar-color: #bbb transparent;
+  @media (min-width: 40rem){
+    padding-inline: 2rem;
+  }
 }
 .scrollbar-custom::-webkit-scrollbar {
   width: 8px;
@@ -136,4 +159,44 @@ body {
 .portfolio-link {
   width: 100%;
   text-align: center;
+}
+
+.title-container {
+  container-type: inline-size;
+  h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    @media (min-width: 40rem){
+      font-size: clamp(2rem, 10cqw, 4rem);
+    }
+  }
+}
+
+.toggle_nav {
+ position: relative;
+ z-index: 1000;
+}
+
+.mobileNav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: var(--background);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease-in-out;
+
+  &.isOpen__true {
+    transform: translateX(0);
+  }
+  &.isOpen__false {
+    transform: translateX(-100%);
+  }
 }

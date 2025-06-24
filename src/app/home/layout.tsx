@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import '../../ui/globals.css';
 
 export const metadata: Metadata = {
   title: {

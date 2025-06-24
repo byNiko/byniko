@@ -37,7 +37,7 @@ export default function RootLayout({
 }>) {
   return (
     <>
-      <div className="container mx-auto max-w-2xl lg:max-w-6xl">
+      <div className="container mx-auto  max-w-6xl">
         <div className={`flex flex-col ${body_font.className} text-xl`}>
           {children}
           <SiteFooter />

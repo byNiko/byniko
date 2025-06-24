@@ -1,5 +1,20 @@
 .masthead {
 	position: absolute;
 	top: 50%;
-	transform: translatey(-50%);
+	transform: translatey(-50%) rotate(90deg);
+	line-height: 1.2;
+	font-size: clamp(3rem, 8vh, 8rem);
+	transition: transform .5s ease-in-out;
+	@media (min-width: 40rem){
+		font-size: clamp(2rem, 11vw, 10rem);
+		transform: translatey(-50%) rotate(0deg);
+	}
+}
+
+.fluid_text__subtitle {
+	font-size:clamp(16px,.3em, 3rem); 
+	font-weight: 300;
+	@media (min-width: 40rem){
+		/* font-size: .51em; */
+	}
 }

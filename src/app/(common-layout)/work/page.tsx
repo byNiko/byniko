@@ -8,9 +8,7 @@ export default async function Work() {
   const pages = await getAllPortfolioItems();
   return (
     <>
-      {/* <div className="container mx-auto max-w-2xl lg:max-w-4xl">
-     <div className={`flex flex-col ${body_font.className} text-xl`}> */}
-      <h2 className="font-extrabold text-4xl mb-4">Our Work.</h2>
+      <h2 className="font-extrabold text-4xl mb-4">Latest Work.</h2>
       <div className="prose prose-2xl prose-blue grid gap-12  grid-cols-[repeat(auto-fit,minmax(25%,1fr))]">
         {pages.map((page) => {
           return (
@@ -33,8 +31,6 @@ export default async function Work() {
           );
         })}
       </div>
-      {/* </div>
-    </div> */}
     </>
   );
 }
