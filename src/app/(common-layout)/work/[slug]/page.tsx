@@ -84,7 +84,7 @@ export default async function PortfolioPage({
           {mainImage && (
             <div className="featured-image">
               <ContentfulImage
-                
+                priority
                 asset={mainImage}
                 alt={title}
                 className="w-full shadow"
