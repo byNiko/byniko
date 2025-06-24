@@ -1,0 +1,17 @@
+
+.circleLogo {
+	background: var(--primary-500);
+	color: #fff;
+	border-radius: 50%;
+	justify-content: center;
+	align-items: center;
+	width: 60px;
+	aspect-ratio: 1;
+	display: flex;
+	container-type: inline-size;
+	text-shadow: 0 0 3px blue;
+	box-shadow: 2px 2px 5px #ccc;
+	span {
+	  font-size: 39.5cqw;
+	}
+  }

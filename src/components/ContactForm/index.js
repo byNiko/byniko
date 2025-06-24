@@ -1,16 +1,21 @@
 'use client';
 // For more help visit https://formspr.ee/react-help
-import React from 'react';
 import { useForm } from '@formspree/react';
+import './style.css';
 
-// console.log('Form ID:', process.env.NEXT_PUBLIC_FORMSPREE_FORM); // Will log only server-side
 export default function ContactForm() {
 
-  // const [state, handleSubmit] = useForm("mjkrakak");
-  const [state, handleSubmit] = useForm(process.env.NEXT_PUBLIC_FORMSPREE_FORM);
+  const [state, handleSubmit, reset] = useForm(process.env.NEXT_PUBLIC_FORMSPREE_FORM);
+  if (state.submitting) {
+    return <p>Submitting…</p>;
+  }
 
   if (state.succeeded) {
-    return <p>Thanks for joining!</p>;
+    return (
+      <div>
+        <p>Thanks!</p>;<button onClick={reset}>Reset</button>
+      </div>
+    );
   }
 
   return (

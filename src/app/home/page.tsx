@@ -1,7 +1,5 @@
 import { subfont, logo_font } from '../../ui/fonts';
-import styles from '../../ui/home.module.css';
-
-// import type { Metadata, ResolvingMetadata } from 'next';
+import styles from './home.module.css';
 
 export default function Home() {
   return (
