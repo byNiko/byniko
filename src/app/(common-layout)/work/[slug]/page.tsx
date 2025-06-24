@@ -56,10 +56,10 @@ export default async function PortfolioPage({
         {servicesList && (
           <>
             <div className="w-1/1 md:w-2/7">
-              <h3 className="text-[1rem] border-b">Services:</h3>
-              <ul className="text-sm bg-blue-50 p-4 rounded-md shadow-sm mt-4">
+              <h3 className="hidden md:block text-[1rem] border-b">Services:</h3>
+              <ul className="flex flex-wrap md:block gap-4 text-xs md:text-sm md:bg-blue-50 md:p-4 md:rounded-md md:shadow-sm md:mt-4">
                 {servicesList?.map((service, index) => (
-                  <li className="leading-5 my-1" key={index}>
+                  <li className="leading-5 my-1 bg-blue-50 md:bg-transparent p-2 md:p-0 rounded-md md:rounded-none md:shadow-none shadow-sm" key={index}>
                     {service}
                   </li>
                 ))}
@@ -68,7 +68,7 @@ export default async function PortfolioPage({
           </>
         )}
       </div>
-      <div className="my-5 flex gap-8 flex-wrap md:flex-nowrap justify-between">
+      <div className="md:my-5 flex gap-8 flex-wrap md:flex-nowrap justify-between">
         <div className="md:w-5/7">
           <hr className="h-1 my-5 border-0 rounded-sm bg-gray-300" />
         </div>
@@ -76,11 +76,11 @@ export default async function PortfolioPage({
       </div>
 
       {/* Body and Featured Image */}
-      <div className="my-5 flex gap-8 flex-wrap md:flex-nowrap justify-between">
-        <div className="md:w-5/7">
+      <div className="md:my-5 flex gap-8 flex-wrap md:flex-nowrap justify-between">
+        <div className="md:w-5/7 order-1 md:order-0">
           <div className="prose prose-2xl prose-blue  ">{parsedBody}</div>
         </div>
-        <aside className="md:w-2/7 flex flex-col gap-4">
+        <aside className="md:w-2/7 flex flex-col gap-4 order-0">
           {mainImage && (
             <div className="featured-image">
               <ContentfulImage

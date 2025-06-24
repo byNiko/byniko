@@ -135,9 +135,9 @@ body {
 .title-container {
   container-type: inline-size;
   h1 {
-    font-size: clamp(2rem, 5vw, 3rem);
+    font-size: clamp(2rem, 10cqw, 4rem);
     @media (min-width: 40rem){
-      font-size: clamp(2rem, 10cqw, 4rem);
+      /* font-size: clamp(2rem, 10cqw, 4rem); */
     }
   }
 }
