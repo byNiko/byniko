@@ -95,10 +95,10 @@ export default function ContactForm() {
 
         <div className="col-span-full flex flex-row-reverse gap-x-3">
           <button
-            className="cursor-pointer rounded-md bg-[--color-blue-600] px-8 py-4 text-sm font-medium leading-4 text-white transition-colors duration-200 hover:bg-[--color-primary-active] focus-visible:bg-[--color-primary-active] focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-[--color-highlight]"
+            className="cursor-pointer rounded-md bg-blue-400 hover:bg-blue-600 px-8 py-4 text-sm font-medium leading-4 text-white transition-colors duration-200 hover:bg-[--color-primary-active] focus-visible:bg-[--color-primary-active] focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-[--color-highlight]"
             type="submit"
           >
-            Submit
+            Send
           </button>
         </div>
       </form>
