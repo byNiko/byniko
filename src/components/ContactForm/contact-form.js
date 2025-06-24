@@ -3,8 +3,16 @@
 import React from 'react';
 import { useForm } from '@formspree/react';
 
+const formId = process.env.NEXT_PUBLIC_FORMSPREE_FORM;
+
+if (!formId) {
+  throw new Error('NEXT_PUBLIC_FORMSPREE_FORM is not set');
+}
+
 export default function ContactForm() {
-  const [state, handleSubmit] = useForm(process.env.NEXT_PUBLIC_FORMSPREE_FORM);
+
+  const [state, handleSubmit] = useForm(formId);
+  // const [state, handleSubmit] = useForm(process.env.NEXT_PUBLIC_FORMSPREE_FORM);
 
   if (state.succeeded) {
     return <p>Thanks for joining!</p>;
