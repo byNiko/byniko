@@ -13,7 +13,7 @@ if (!formId) {
 
 export default function ContactForm() {
 
-  const [state, handleSubmit] = useForm(formId);
+  const [state, handleSubmit] = useForm("mjkrakak");
   // const [state, handleSubmit] = useForm(process.env.NEXT_PUBLIC_FORMSPREE_FORM);
 
   if (state.succeeded) {
