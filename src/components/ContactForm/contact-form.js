@@ -3,6 +3,8 @@
 import React from 'react';
 import { useForm } from '@formspree/react';
 
+console.log('Form ID:', process.env.NEXT_PUBLIC_FORMSPREE_FORM); // Will log only server-side
+
 const formId = process.env.NEXT_PUBLIC_FORMSPREE_FORM;
 
 if (!formId) {
