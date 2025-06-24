@@ -80,13 +80,14 @@ export default async function PortfolioPage({
         <div className="md:w-5/7 order-1 md:order-0">
           <div className="prose prose-2xl prose-blue  ">{parsedBody}</div>
         </div>
-        <aside className="md:w-2/7 flex flex-col gap-4 order-0">
+        <aside className="md:w-2/7 flex flex-col gap-4 order-0 w-full">
           {mainImage && (
             <div className="featured-image">
               <ContentfulImage
+                
                 asset={mainImage}
                 alt={title}
-                className="w-full"
+                className="w-full shadow"
               />
             </div>
           )}
