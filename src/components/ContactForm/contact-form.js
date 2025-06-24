@@ -1,7 +1,7 @@
 'use client';
 // For more help visit https://formspr.ee/react-help
 import React from 'react';
-import { useForm, ValidationError } from '@formspree/react';
+import { useForm } from '@formspree/react';
 
 export default function ContactForm() {
   const [state, handleSubmit] = useForm(process.env.NEXT_PUBLIC_FORMSPREE_FORM);

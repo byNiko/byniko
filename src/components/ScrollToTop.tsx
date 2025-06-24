@@ -9,16 +9,16 @@ export default function ScrollToTop({
   targetElement: string;
 }) {
 	const pathname = usePathname();
-	useEffect( () => {
-	if ( typeof document !== 'undefined' ) {
-		const target = targetElement
-			? document.querySelector( targetElement )
-			: undefined;
-		
-			if ( target ) {
-				target.scrollTo( 0, 0 );
-			}
-		}
-	}, [pathname] );
+	useEffect(() => {
+    if (typeof document !== 'undefined') {
+      const target = targetElement
+        ? document.querySelector(targetElement)
+        : undefined;
+
+      if (target) {
+        target.scrollTo(0, 0);
+      }
+    }
+  }, [pathname, targetElement]);
   return null;
 }

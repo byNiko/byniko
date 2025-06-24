@@ -1,10 +1,10 @@
 'use client';
 
-import navLinksData from '@/utils/navLinks-data';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { subfont } from '../ui/fonts';
-import clsx from 'clsx';
+// import navLinksData from '@/utils/navLinks-data';
+// import Link from 'next/link';
+// import { usePathname } from 'next/navigation';
+// import { subfont } from '../ui/fonts';
+// import clsx from 'clsx';
 import { useState } from 'react';
 import NavLinks from './NavLinks';
 
