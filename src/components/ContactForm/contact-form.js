@@ -4,13 +4,6 @@ import React from 'react';
 import { useForm } from '@formspree/react';
 
 console.log('Form ID:', process.env.NEXT_PUBLIC_FORMSPREE_FORM); // Will log only server-side
-
-const formId = process.env.NEXT_PUBLIC_FORMSPREE_FORM;
-
-if (!formId) {
-  throw new Error('NEXT_PUBLIC_FORMSPREE_FORM is not set');
-}
-
 export default function ContactForm() {
 
   const [state, handleSubmit] = useForm("mjkrakak");
