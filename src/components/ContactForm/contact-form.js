@@ -3,11 +3,11 @@
 import React from 'react';
 import { useForm } from '@formspree/react';
 
-console.log('Form ID:', process.env.NEXT_PUBLIC_FORMSPREE_FORM); // Will log only server-side
+// console.log('Form ID:', process.env.NEXT_PUBLIC_FORMSPREE_FORM); // Will log only server-side
 export default function ContactForm() {
 
-  const [state, handleSubmit] = useForm("mjkrakak");
-  // const [state, handleSubmit] = useForm(process.env.NEXT_PUBLIC_FORMSPREE_FORM);
+  // const [state, handleSubmit] = useForm("mjkrakak");
+  const [state, handleSubmit] = useForm(process.env.NEXT_PUBLIC_FORMSPREE_FORM);
 
   if (state.succeeded) {
     return <p>Thanks for joining!</p>;
