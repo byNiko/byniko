@@ -4,7 +4,7 @@ import { useForm } from '@formspree/react';
 import './style.css';
 
 export default function ContactForm() {
-  const [state, handleSubmit, reset] = useForm(
+  const [state, handleSubmit] = useForm(
     process.env.NEXT_PUBLIC_FORMSPREE_FORM,
   );
   if (state.submitting) {
