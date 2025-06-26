@@ -3,7 +3,6 @@
 import { useForm } from '@formspree/react';
 import TextArea from './TextArea';
 import './style.css';
-import { div } from 'framer-motion/client';
 
 export default function DiscoveryForm() {
 
@@ -35,7 +34,7 @@ export default function DiscoveryForm() {
       <p className='mb-5 leading-tight text-center'>
         <small>
           We need your contact info to get back to you.<br/> The rest of the form is
-          optional.{' '}
+          optional.
         </small>
       </p>
       <form
