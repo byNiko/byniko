@@ -1,6 +1,6 @@
 'use client';
 
-import Gallery from './Gallery';
+import Gallery from './Gallery/Gallery';
 import { Asset } from 'contentful';
 
 export default function ClientGalleryWrapper({slides}: {slides: Array<Asset>}) {
