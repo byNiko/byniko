@@ -51,7 +51,17 @@ export default function Gallery( { slides }: { slides: Asset[] } ) {
         navigation
         pagination={{ clickable: true }}
         spaceBetween={30}
-        slidesPerView={4}
+        slidesPerView={2}
+        breakpoints={
+          {
+            640: {
+              slidesPerView: 3,
+            },
+            1024: {
+              slidesPerView: 4,
+            }
+          }
+        }
         onSwiper={(swiper) => {
           mainSwiperRef.current = swiper;
           if (modalSwiperRef.current) {

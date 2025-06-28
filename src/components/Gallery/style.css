@@ -1,3 +1,6 @@
+.swiper-container {
+	padding-bottom: 2.5rem;
+}
 /* Full-Screen Gallery Styles */
 .fullscreen-modal {
 	--swiper-navigation-color: white;
