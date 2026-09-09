@@ -4,9 +4,14 @@ import { useForm } from '@formspree/react';
 import TextArea from './TextArea';
 import './style.css';
 
-export default function DiscoveryForm() {
+const FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_DISCOVERY;
 
-  const [state, handleSubmit] = useForm(process.env.NEXT_PUBLIC_FORMSPREE_DISCOVERY);
+export default function DiscoveryForm() {
+  // Hooks must run unconditionally, so a placeholder id is passed when the
+  // form is unconfigured; useForm throws on an undefined id, and this page is
+  // prerendered at build time, so that throw would fail the whole build. The
+  // unconfigured case is handled in render, below.
+  const [state, handleSubmit] = useForm(FORM_ID || 'unconfigured');
   if (state.submitting) {
     return <p>Submitting…</p>;
   }
@@ -25,6 +30,22 @@ export default function DiscoveryForm() {
             We&apos;ll be in touch shortly to discuss the next exciting steps!
           </p>
         </div>
+      </div>
+    );
+  }
+
+  // A form that cannot submit must say so, not fail silently on send.
+  if (!FORM_ID) {
+    return (
+      <div className="facts p-8" role="status">
+        <h2 className="t-display text-[1.5rem]" style={{ fontStretch: '104%' }}>
+          The questionnaire isn&rsquo;t connected.
+        </h2>
+        <p className="t-prose mt-3 text-ink-muted">
+          Something on my end isn&rsquo;t configured, so this form can&rsquo;t
+          send right now. Please reach out through whichever channel you found
+          me on — I don&rsquo;t want to lose your answers.
+        </p>
       </div>
     );
   }
