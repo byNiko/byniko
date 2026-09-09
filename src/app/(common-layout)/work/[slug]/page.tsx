@@ -1,16 +1,14 @@
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { Document } from '@contentful/rich-text-types';
 
 import { getPortfolioItem } from '@/lib/contentful';
-import ContentfulImage from '@/components/ContentfulImage';
-import ClientGalleryWrapper from '@/components/ClientGallery';
 import { renderOptions } from '@/components/rich-text/renderOptions';
-import { PortfolioPageFields } from '../../../../../declarations';
-import Link from 'next/link';
-import ScrollToTop from '@/components/ScrollToTop';
-
-const Gallery = ClientGalleryWrapper;
+import { PortfolioPageFields } from '@/../declarations';
+import GalleryStatic from '@/components/GalleryStatic/GalleryStatic';
+import { ModalContextProvider } from '@/components/ModalContext/ModalContext';
+import FeaturedImage from '@/components/FeaturedImage/FeaturedImage';
 
 export async function generateMetadata({
   params,
@@ -19,9 +17,14 @@ export async function generateMetadata({
 }) {
   const { slug } = await params;
   const item = await getPortfolioItem(slug);
+  if (!item) return { title: 'Project not found' };
 
+  const { title, servicesList } = item.fields as PortfolioPageFields;
   return {
-    title: item.fields.title,
+    title,
+    description: servicesList?.length
+      ? `${title} — ${servicesList.join(', ')}. Built by byNiko.`
+      : `${title} — a project built by byNiko.`,
   };
 }
 
@@ -32,75 +35,109 @@ export default async function PortfolioPage({
 }) {
   const { slug } = await params;
   const post = await getPortfolioItem(slug);
-
   if (!post) return notFound();
 
-  const { title, body, mainImage, servicesList, gallery } =
+  const { title, body, mainImage, servicesList, gallery, publicUrl } =
     post.fields as PortfolioPageFields;
 
-  const parsedBody = documentToReactComponents(body as Document, renderOptions);
+  const parsedBody = body
+    ? documentToReactComponents(body as Document, renderOptions)
+    : null;
 
   return (
-    <>
-      <div className="breadcrumbs text-base flex gap-2 mb-4">
-        <Link className="underline " href="/work">
-          Our Work
+    <ModalContextProvider>
+      <nav aria-label="Breadcrumb" className="mb-6">
+        <Link
+          href="/work"
+          className="link-target t-label text-ink-muted transition-colors hover:text-accent"
+        >
+          ← All work
         </Link>
-        <span className="text-gray-400">&gt;</span>
-        <span>{title}</span>
-      </div>
-      <div className="flex flex-wrap md:flex-nowrap gap-4 justify-between">
-        <div className="w-full md:w-5/7 title-container">
-          <h1 className="font-extrabold text-7xl mb-4 text-balance">{title}</h1>
-        </div>
-        {servicesList && (
-          <>
-            <div className="w-1/1 md:w-2/7">
-              <h3 className="hidden md:block text-[1rem] border-b">Services:</h3>
-              <ul className="flex flex-wrap md:block gap-4 text-xs md:text-sm md:bg-blue-50 md:p-4 md:rounded-md md:shadow-sm md:mt-4">
-                {servicesList?.map((service, index) => (
-                  <li className="leading-5 my-1 bg-blue-50 md:bg-transparent p-2 md:p-0 rounded-md md:rounded-none md:shadow-none shadow-sm" key={index}>
-                    {service}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </>
-        )}
-      </div>
-      <div className="md:my-5 flex gap-8 flex-wrap md:flex-nowrap justify-between">
-        <div className="md:w-5/7">
-          <hr className="h-1 my-5 border-0 rounded-sm bg-gray-300" />
-        </div>
-        <aside className="md:w-2/7 flex flex-col gap-4"></aside>
-      </div>
+      </nav>
 
-      {/* Body and Featured Image */}
-      <div className="md:my-5 flex gap-8 flex-wrap md:flex-nowrap justify-between">
-        <div className="md:w-5/7 order-1 md:order-0">
-          <div className="prose prose-2xl prose-blue  ">{parsedBody}</div>
-        </div>
-        <aside className="md:w-2/7 flex flex-col gap-4 order-0 w-full">
+      <header className="rule-bottom pb-10">
+        <h1
+          className="t-statement text-[2.5rem] sm:text-[3.5rem] lg:text-[4rem]"
+          style={{ maxWidth: 'min(15ch, 100%)' }}
+        >
+          {title}
+        </h1>
+      </header>
+
+      <div className="mt-10 grid gap-12 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-16">
+        <div className="order-2 lg:order-1">
           {mainImage && (
-            <div className="featured-image">
-              <ContentfulImage
-                priority
-                asset={mainImage}
-                alt={title}
-                className="w-full shadow"
-              />
-            </div>
+            <FeaturedImage
+              mainImage={mainImage}
+              title={title}
+              slides={gallery ?? []}
+            />
           )}
+
+          {parsedBody ? (
+            <div className="prose prose-niko prose-lg mt-10 max-w-[min(68ch,100%)]">
+              {parsedBody}
+            </div>
+          ) : (
+            <p className="t-prose mt-10 text-ink-muted">
+              The write-up for this project isn&rsquo;t published yet. The
+              services listed alongside are accurate — ask me about it and
+              I&rsquo;ll walk you through the work.
+            </p>
+          )}
+
+          {gallery && gallery.length > 0 && (
+            <section className="mt-14">
+              <h2 className="t-label rule-strong-bottom mb-6 pb-3 text-ink-muted">
+                More from this project
+              </h2>
+              <GalleryStatic slides={gallery} />
+            </section>
+          )}
+        </div>
+
+        <aside className="order-1 self-start lg:sticky lg:top-28 lg:order-2">
+          <div className="facts">
+            <dl className="m-0">
+              {servicesList?.length ? (
+                <div className="facts-row">
+                  <dt className="facts-key t-label">What I did</dt>
+                  <dd className="facts-value m-0">
+                    <ul className="m-0 list-none space-y-1 p-0">
+                      {servicesList.map((service) => (
+                        <li key={service}>{service}</li>
+                      ))}
+                    </ul>
+                  </dd>
+                </div>
+              ) : null}
+              <div className="facts-row">
+                <dt className="facts-key t-label">Practice</dt>
+                <dd className="facts-value m-0">byNiko — sole proprietor</dd>
+              </div>
+            </dl>
+            {publicUrl && (
+              <a
+                href={publicUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="action no-underline"
+              >
+                Visit the live site <span className="arrow">↗</span>
+              </a>
+            )}
+          </div>
+
+          <div className="rule-top mt-8 pt-8">
+            <p className="t-prose text-sm text-ink-muted">
+              Working on something like this?
+            </p>
+            <Link href="/contact" className="action-quiet mt-3">
+              Start a project <span aria-hidden>→</span>
+            </Link>
+          </div>
         </aside>
       </div>
-
-      {/* Gallery */}
-      {gallery && gallery.length > 0 && (
-        <div className="mt-14 flex gap-14 flex-nowrap">
-          <Gallery slides={gallery} />
-        </div>
-      )}
-      <ScrollToTop targetElement="#scroll-container" />
-    </>
+    </ModalContextProvider>
   );
 }

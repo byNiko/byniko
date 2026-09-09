@@ -1,15 +1,51 @@
+import Link from 'next/link';
+import navLinksData from '@/utils/navLinks-data';
+
 export default function SiteFooter() {
   return (
-    <footer className="hidden bg-linear-to-tr  bg-stone-800 text-white rounded-lg py-8 px-4 shadow-md mt-16">
-      <div className="container mx-auto max-w-2xl xl:max-w-3xl ">
-        <div className="flex flex-col gap-4 py-8 text-center">
-          <div className="flex flex-col gap-2 text-center">
-            <h2 className="text-2xl font-extrabold">
-              <span className="text-white">byNiko</span>
-            </h2>
-            <p className="text-sm">website & brand development for the arts</p>
-          </div>
+    <footer className="rule-top mt-4">
+      <div className="shell grid gap-10 py-12 md:grid-cols-[minmax(0,1fr)_auto] md:gap-20 md:py-14">
+        <div>
+          <p
+            className="text-[1.15rem] font-bold tracking-[-0.02em]"
+            style={{ fontStretch: '104%' }}
+          >
+            byNiko
+          </p>
+          <p className="t-prose mt-2 text-sm text-ink-muted">
+            Websites, brands and custom applications for galleries, nonprofits
+            and small businesses. An independent practice run by one person,
+            since 2010.
+          </p>
+          <Link href="/contact" className="action-quiet mt-6">
+            Start a project <span aria-hidden>→</span>
+          </Link>
         </div>
+
+        <nav aria-label="Footer" className="md:min-w-40">
+          <h2 className="t-label rule-bottom mb-3 pb-2 text-ink-faint">Pages</h2>
+          <ul className="m-0 grid list-none gap-0 p-0 md:gap-1">
+            {navLinksData.map((link) => (
+              <li key={link.name}>
+                <Link
+                  href={link.href}
+                  className="link-target text-sm text-ink-muted transition-colors hover:text-ink"
+                >
+                  {link.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+
+      <div className="shell rule-top flex flex-wrap items-center justify-between gap-3 py-5">
+        <p className="t-label text-ink-faint">
+          © {new Date().getFullYear()} byNiko
+        </p>
+        <p className="t-label text-ink-faint">
+          Website &amp; brand development for the arts
+        </p>
       </div>
     </footer>
   );

@@ -1,16 +1,12 @@
-import { Montserrat_Alternates } from 'next/font/google';
-export const logo_font = Montserrat_Alternates({
+import { Archivo } from 'next/font/google';
+
+/**
+ * One superfamily. Hierarchy comes from the width axis, not from a second face:
+ * expanded for the statement, regular for prose, narrow tracked caps for labels.
+ */
+export const archivo = Archivo({
   subsets: ['latin'],
-  weight: ['900'],
+  axes: ['wdth'],
   display: 'swap',
-});
-export const subfont = Montserrat_Alternates({
-  subsets: ['latin'],
-  weight: ['700'],
-  display: 'swap',
-});
-export const body_font = Montserrat_Alternates({
-  subsets: ['latin'],
-  weight: ['400'],
-  display: 'swap',
+  variable: '--font-archivo',
 });

@@ -1,0 +1,257 @@
+{
+  "pages": [
+    {
+      "id": "page-1",
+      "name": "Pages"
+    },
+    {
+      "id": "page-3",
+      "name": "Mobile"
+    },
+    {
+      "id": "page-2",
+      "name": "Archive"
+    }
+  ],
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "title": "Home",
+      "page": "page-1",
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 1360
+    },
+    {
+      "file": "Work.dc.html",
+      "title": "Work index",
+      "page": "page-1",
+      "x": 1560,
+      "y": 0,
+      "w": 1440,
+      "h": 1360
+    },
+    {
+      "file": "Study.dc.html",
+      "title": "Case study",
+      "page": "page-1",
+      "x": 3120,
+      "y": 0,
+      "w": 1440,
+      "h": 2100
+    },
+    {
+      "file": "About.dc.html",
+      "title": "About",
+      "page": "page-1",
+      "x": 4680,
+      "y": 0,
+      "w": 1440,
+      "h": 1360
+    },
+    {
+      "file": "Contact.dc.html",
+      "title": "Contact",
+      "page": "page-1",
+      "x": 6240,
+      "y": 0,
+      "w": 1440,
+      "h": 1360
+    },
+    {
+      "file": "Ledger.dc.html",
+      "title": "Layout · Ledger",
+      "page": "page-2",
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 1340
+    },
+    {
+      "file": "Drafting.dc.html",
+      "title": "Layout · Drafting",
+      "page": "page-2",
+      "x": 1560,
+      "y": 0,
+      "w": 1440,
+      "h": 1340
+    },
+    {
+      "file": "Table.dc.html",
+      "title": "Layout · Table",
+      "page": "page-2",
+      "x": 3120,
+      "y": 0,
+      "w": 1440,
+      "h": 1340
+    },
+    {
+      "file": "Gallery.dc.html",
+      "title": "A · Gallery",
+      "page": "page-2",
+      "x": 0,
+      "y": 1560,
+      "w": 1440,
+      "h": 1260
+    },
+    {
+      "file": "Poster.dc.html",
+      "title": "B · Poster",
+      "page": "page-2",
+      "x": 1560,
+      "y": 1560,
+      "w": 1440,
+      "h": 1260
+    },
+    {
+      "file": "Letter.dc.html",
+      "title": "D · Letter",
+      "page": "page-2",
+      "x": 3120,
+      "y": 1560,
+      "w": 1440,
+      "h": 1260
+    },
+    {
+      "file": "Night.dc.html",
+      "title": "Palette · Night",
+      "page": "page-2",
+      "x": 0,
+      "y": 3120,
+      "w": 1440,
+      "h": 1260
+    },
+    {
+      "file": "Field.dc.html",
+      "title": "Palette · Field",
+      "page": "page-2",
+      "x": 1560,
+      "y": 3120,
+      "w": 1440,
+      "h": 1260
+    },
+    {
+      "file": "Rust.dc.html",
+      "title": "Palette · Rust",
+      "page": "page-2",
+      "x": 3120,
+      "y": 3120,
+      "w": 1440,
+      "h": 1260
+    },
+    {
+      "file": "MobileHome.dc.html",
+      "title": "Mobile · Home",
+      "page": "page-3",
+      "x": 0,
+      "y": 0,
+      "w": 390,
+      "h": 1470
+    },
+    {
+      "file": "MobileMenu.dc.html",
+      "title": "Mobile · Menu open",
+      "page": "page-3",
+      "x": 700,
+      "y": 0,
+      "w": 390,
+      "h": 844
+    },
+    {
+      "file": "MobileWork.dc.html",
+      "title": "Mobile · Work index",
+      "page": "page-3",
+      "x": 1400,
+      "y": 0,
+      "w": 390,
+      "h": 1660
+    }
+  ],
+  "annotations": [
+    {
+      "id": "intro",
+      "page": "page-1",
+      "x": 0,
+      "y": -300,
+      "w": 1200,
+      "text": "BLUEPRINT · RAIL — the full set\n\nFive pages, left to right: Home, Work index, Case study, About, Contact. The 316px rail is generated from one source, so it is byte-identical on every page — build it once as a component and every page after this is just the right column.\n\nStill placeholder: all images, and anything in [brackets] — your city, email, project years, response time, and the per-project service lists that should come out of Contentful."
+    },
+    {
+      "id": "pg-work",
+      "page": "page-1",
+      "x": 1560,
+      "y": 1400,
+      "w": 700,
+      "text": "WORK INDEX\n\nThis page carries the visuals the home page deliberately doesn't — all nine projects, three up, images first.\n\nThe filter chips are the new idea: your case studies already carry a services list, so filtering by discipline is close to free and it demonstrates range to an arts client who only cares about one of the three things you do.\n\nOpen question: is 'Brand systems / Front-end / Custom applications' the right cut, or do you want to filter by client type instead — galleries, performers, nonprofits?"
+    },
+    {
+      "id": "pg-study",
+      "page": "page-1",
+      "x": 3120,
+      "y": 2140,
+      "w": 700,
+      "text": "CASE STUDY — real Calibrate.earth copy, moved to first person\n\nThe structure follows what you already write: an Ask and a Delivery, with the mono section tags running down the left so a long page stays navigable.\n\nThree things added that your current case studies don't have: a meta block up top (client / services / year / engagement — 'Pro bono' is called out because it's a credit to you, not a footnote), the live-site link promoted out of the sidebar where nobody was finding it, and next-project navigation at the bottom so the page isn't a dead end.\n\nStill missing and worth adding: an outcome. One line on what changed for them after launch does more than another paragraph of process."
+    },
+    {
+      "id": "pg-about",
+      "page": "page-1",
+      "x": 4680,
+      "y": 1400,
+      "w": 700,
+      "text": "ABOUT\n\n'I speak artist' is your line, kept — it's the best sentence on your current site. The body is your existing About copy moved to first person.\n\nThe Details block is doing quiet work: founded, structure, capacity, response time. A one-person shop reads as a risk to an institutional client, so stating the constraints plainly is more reassuring than hiding them.\n\nThe portrait is a real ask, not a placeholder I'd skip — for a sole proprietor it's the highest-value image on the site."
+    },
+    {
+      "id": "pg-contact",
+      "page": "page-1",
+      "x": 6240,
+      "y": 1400,
+      "w": 700,
+      "text": "CONTACT\n\nFields match what your Formspree form already collects, with two changes: Organisation and Phone are marked optional (your current form requires Company, which loses individual artists), and the message field asks a question rather than saying 'Inquiry'.\n\nYour discovery questionnaire is linked here — it's built and live but currently orphaned, with nothing on the site pointing at it.\n\nDirect email is shown alongside the form. Some clients will never fill in a form."
+    },
+    {
+      "id": "archive",
+      "page": "page-2",
+      "x": 0,
+      "y": -200,
+      "w": 960,
+      "text": "Everything ruled out along the way: the other two Rail-era layouts, the original table layout, the three aesthetic directions, and the palettes. Kept for reference — say the word and I'll clear the page."
+    },
+    {
+      "id": "mob-intro",
+      "page": "page-3",
+      "x": 0,
+      "y": -330,
+      "w": 1200,
+      "text": "WHAT HAPPENS TO THE RAIL ON MOBILE\n\nThe rail doesn't get hidden — it gets taken apart into the three jobs it was doing, and each one lands somewhere it fits.\n\n1. NAVIGATION goes into a 56px sticky header with a Menu button. Tapping it opens the drawer in the middle artboard: the same four items at 27px, roughly 60px tall each, well over the 44px hit-target floor.\n\n2. THE SPEC AND STATUS become a colophon at the bottom of every page. Nothing is buried behind the menu button — services, stack, availability and your email are all reachable by scrolling, which is what most people will do anyway.\n\n3. THE DRAWER also carries the spec and status, so opening the menu gives you the whole rail, unchanged. It is literally the same component."
+    },
+    {
+      "id": "mob-menu",
+      "page": "page-3",
+      "x": 700,
+      "y": 884,
+      "w": 620,
+      "text": "The drawer is exactly one viewport tall — 390x844 — and it never scrolls. That is a constraint worth keeping: if the nav ever grows past what fits here, the site has too many pages.\n\nNote there is no fake status bar or keyboard drawn in these. The real ones render on top of your layout on a real device."
+    },
+    {
+      "id": "mob-work",
+      "page": "page-3",
+      "x": 1400,
+      "y": 1720,
+      "w": 620,
+      "text": "Two mobile-specific calls worth your opinion:\n\nThe filter chips scroll horizontally rather than wrapping to three rows — you can see the third one running off the edge. If we end up with more than about five disciplines this needs to become a dropdown instead.\n\nThe work rows on the home page drop their images entirely and become two-line entries; here on the index the images stay full-width. Same reasoning as desktop — the home page is the writing, the index is the pictures."
+    },
+    {
+      "id": "mob-build",
+      "page": "page-3",
+      "x": 0,
+      "y": 1510,
+      "w": 620,
+      "text": "BUILD NOTES — mobile nav\n\n1. HEIGHT UNIT. The drawer is position: fixed; inset: 0; height: 100dvh — not 100vh. On mobile Safari 100vh means \"viewport height with the URL bar retracted\", so a 100vh overlay sits roughly 60-90px taller than the screen while the bar is showing, and the bottom of the drawer is unreachable because a fixed overlay can't be scrolled.\n\nExisting bug to fix: src/ui/globals.css line 150 — .mobileNav uses height: 100vh. Line 41 of the same file already does it correctly for .static-container, with the 100vh -> 100dvh fallback pair. The container knows about dvh and the nav doesn't.\n\n2. SCROLL LOCK. body already carries overflow: hidden, so the page behind the open drawer won't scroll. If that ever comes off, the drawer needs its own lock.\n\n3. SAFE AREA. padding-bottom: env(safe-area-inset-bottom) on the drawer, so the status block clears the home indicator on notched phones.\n\n4. HIT TARGETS. Nav rows are about 60px tall; the Menu / Close control is 44px minimum including its padding, even though the icon is smaller. Don't shrink either.\n\n5. NO SCROLL IN THE DRAWER. It is exactly one viewport by design. If the nav ever outgrows that, cut pages rather than adding scroll.\n\n6. The header row is part of the drawer, not above it — the overlay is full-bleed and the Close control replaces Menu in place, so nothing shifts when it opens."
+    }
+  ],
+  "launch": {
+    "view": "canvas",
+    "page": "page-3"
+  }
+}

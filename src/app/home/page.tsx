@@ -1,12 +1,118 @@
-// import { subfont, logo_font } from '../../ui/fonts';
-import Masthead from './Masthead';
+import Link from 'next/link';
+import { getAllPortfolioItems } from '@/lib/contentful';
+import WorkGrid from '@/components/WorkGrid/WorkGrid';
+import FactsPanel from '@/components/FactsPanel/FactsPanel';
 
-export default function Home() {
+export default async function Home() {
+  const projects = await getAllPortfolioItems();
+  const featured = projects.slice(0, 6);
+
   return (
-    <div className="flex flex-col items-center justify-items-center">
-      <main className="flex flex-col gap-[2px]  items-center">
-       <Masthead />
-      </main>
-    </div>
+    <>
+      {/* Statement + facts ------------------------------------------------ */}
+      <section className="shell rule-bottom pb-14 pt-14 md:pb-20 md:pt-24">
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_23rem] lg:gap-20">
+          <div>
+            <h1
+              className="settle t-statement text-[2.5rem] sm:text-[3.25rem] lg:text-[3.75rem]"
+              style={{ maxWidth: 'var(--measure-statement)', ['--i' as string]: 0 }}
+            >
+              Websites and brands for galleries, nonprofits and small businesses.
+            </h1>
+            <p
+              className="settle t-prose mt-7 text-[1.0625rem] text-ink-muted"
+              style={{ ['--i' as string]: 1 }}
+            >
+              I&rsquo;m Niko. Since 2010 I&rsquo;ve done the whole job myself
+              &mdash; brand, design, front-end, and the custom applications
+              off-the-shelf tools won&rsquo;t cover. No hand-offs, no account
+              manager, no sub-contractors. Everything below, I built.
+            </p>
+          </div>
+
+          <div className="settle" style={{ ['--i' as string]: 2 }}>
+            <FactsPanel />
+          </div>
+        </div>
+      </section>
+
+      {/* Work -------------------------------------------------------------- */}
+      <section className="shell py-14 md:py-20">
+        <div className="rule-strong-bottom mb-9 flex items-baseline justify-between pb-3">
+          <h2 className="t-label text-ink-muted">Selected work</h2>
+          {projects.length > 0 && (
+            <p className="t-label text-ink-faint">
+              {projects.length} {projects.length === 1 ? 'project' : 'projects'}
+            </p>
+          )}
+        </div>
+
+        <WorkGrid projects={featured} />
+
+        {projects.length > featured.length && (
+          <div className="mt-12">
+            <Link href="/work" className="action-quiet">
+              All {projects.length} projects <span aria-hidden>→</span>
+            </Link>
+          </div>
+        )}
+      </section>
+
+      {/* What I do --------------------------------------------------------- */}
+      <section className="shell rule-top py-14 md:py-20">
+        <div className="grid gap-10 lg:grid-cols-[23rem_minmax(0,1fr)] lg:gap-20">
+          <h2 className="t-display text-[1.75rem] md:text-[2.25rem]">
+            Four things, done by one person.
+          </h2>
+          <dl className="grid gap-0 sm:grid-cols-2">
+            {[
+              {
+                t: 'Branding',
+                d: 'Strategy, visual identity, brand guidelines and messaging.',
+              },
+              {
+                t: 'Website design',
+                d: 'UX and UI design, responsive layouts, and user testing.',
+              },
+              {
+                t: 'Development',
+                d: 'Custom builds, CMS integration, e-commerce and bespoke features.',
+              },
+              {
+                t: 'Search engine optimization',
+                d: 'Keyword research, on-page work, technical audits and local search.',
+              },
+            ].map((s) => (
+              <div key={s.t} className="rule-top py-5 pr-8">
+                <dt
+                  className="text-[1.0625rem] font-semibold tracking-[-0.015em]"
+                  style={{ fontStretch: '102%' }}
+                >
+                  {s.t}
+                </dt>
+                <dd className="mt-1.5 max-w-[min(38ch,100%)] text-sm leading-relaxed text-ink-muted">
+                  {s.d}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
+
+      {/* Close ------------------------------------------------------------- */}
+      <section className="shell rule-top py-16 md:py-24">
+        <div className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
+          <h2
+            className="t-statement text-[2rem] sm:text-[2.75rem]"
+            style={{ maxWidth: 'min(18ch, 100%)' }}
+          >
+            Tell me what you&rsquo;re making.
+          </h2>
+          <Link href="/contact" className="action no-underline">
+            Start a project <span className="arrow">→</span>
+          </Link>
+        </div>
+      </section>
+    </>
   );
 }

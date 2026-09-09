@@ -1,0 +1,12 @@
+/* Lightbox slides sit square, like every other image frame on the site —
+   see DESIGN.md, the square-corner rule. */
+.fullscreen-modal .swiper-slide {
+  & > div {
+    img {
+      width: auto;
+      height: 80vh;
+      margin: auto;
+      border-radius: 0;
+    }
+  }
+}
