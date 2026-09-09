@@ -62,6 +62,20 @@ export async function POST(request: Request) {
     // the broad revalidation below.
   }
 
+  // Unpublish and delete arrive as DeletedEntry, which carries `sys` but no
+  // `fields` — so the slug of the page that just went stale is unknowable.
+  // Fall back to a layout revalidation in that case, otherwise the removed
+  // project's own URL keeps serving from cache until the next interval.
+  if (!slug && (contentType === 'portfolioPage' || contentType === 'page')) {
+    revalidatePath('/', 'layout');
+    return Response.json({
+      revalidated: true,
+      scope: 'layout',
+      contentType,
+      reason: 'no slug in payload',
+    });
+  }
+
   const paths = new Set<string>();
 
   switch (contentType) {
