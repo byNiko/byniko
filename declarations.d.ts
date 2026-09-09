@@ -11,6 +11,7 @@ export type PortfolioPageFields = {
   gallery?: Array<Asset>;
   servicesList?: Array<string>;
   contentTypeId: string;
+  publicUrl: string;
 };
 
 export type PageFields = {

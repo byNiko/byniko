@@ -1,173 +1,564 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 @plugin "@tailwindcss/typography";
 
-:root {
-  --off-white: #f8f8f8;
-  --background:var(--off-white);
-  --static-background: var(--background); 
-  --black: #171717;
-  --foreground: var(--primary-500);
-  --primary-200: #ACD3FF;
-  --primary-300: #105BDC;
-  --primary-400: #0A4FBD;
-  --primary-500: #173EB4;
-  --background-gradient: radial-gradient(circle at 10% 10%, var(--primary-300) 0%, var(--primary-500) 100%);
+/* ---------------------------------------------------------------------------
+   byNiko — tokens
+   Paper ground, ink, one accent. Hairlines are the only division: no cards,
+   no shadows, no containers. Project imagery supplies all chromatic variety.
+--------------------------------------------------------------------------- */
 
+:root {
+  --paper: #f7f7f5;
+  --paper-raised: #ffffff;
+  --paper-sunk: #eeeeea;
+
+  --ink: #14161a;
+  --ink-muted: #5c6268;
+  /* 4.8:1 on paper, 5.2:1 on white — these carry 11px labels, so AA applies */
+  --ink-faint: #696f76;
+  --ink-inverse: #f7f7f5;
+
+  --rule: #e2e2de;
+  --rule-strong: #14161a;
+
+  --accent: #0c6b45;
+  --accent-hover: #084f33;
+  --accent-soft: #e7f0eb;
+
+  /* The one chromatic exception to the single-accent rule, admitted as a
+     named decision: an error has to read as an error. 5.9:1 on paper. */
+  --signal-error: #a3261b;
+
+  /* ch-based measures must never win against a narrow viewport */
+  --measure-prose: min(54ch, 100%);
+  --measure-statement: min(20ch, 100%);
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur: 420ms;
+  --dur-fast: 180ms;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-paper: var(--paper);
+  --color-paper-raised: var(--paper-raised);
+  --color-paper-sunk: var(--paper-sunk);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-faint: var(--ink-faint);
+  --color-rule: var(--rule);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-signal-error: var(--signal-error);
+  --font-sans: var(--font-archivo);
+}
+
+/* --- base ---------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
 }
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
-  margin:0;
-  overflow:hidden;
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-archivo), system-ui, sans-serif;
+  font-synthesis-weight: none;
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-.fluid-text--masthead {
-  font-size: clamp(1rem, 2vw, 1.5rem);
-
-}
-
-.prose-blue {
-  color: var(--foreground);
-}
-
-.static-container {
-  padding: 1rem;
-  height: calc(100vh);
-  height: 100dvh;
-  background-image: var(--background-gradient);
-}
-.static-container--inner {
-  height: 100%;
-  border-radius: 1rem;
-  background: var(--static-background);
-  color: var(--foreground);
-}
-
-.nav-container {
-  position: relative;
-  z-index: 10;
-}
-
-.page-content {
- padding-top: 4rem;
-}
-
-/** scrollbar **/
-
-.scrollbar-custom {
-  max-height: 100%;
-   overflow-Y: auto;
-  padding-inline: 1rem;
-  scrollbar-width: thin;
-  scrollbar-color: #bbb transparent;
-  @media (min-width: 40rem){
-    padding-inline: 2rem;
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }
-.scrollbar-custom::-webkit-scrollbar {
-  width: 8px;
+
+/* --- browser surfaces ---------------------------------------------------- */
+
+::selection {
+  background: var(--accent);
+  color: var(--paper-raised);
+}
+
+:root {
+  caret-color: var(--accent);
+  scrollbar-color: var(--ink-faint) transparent;
+  scrollbar-width: thin;
+  accent-color: var(--accent);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
   background: transparent;
 }
-.scrollbar-custom::-webkit-scrollbar-thumb {
-  background: #bbb;
-  border-radius: 4px;
-  opacity: 0;
-  transition: opacity 0.2s;
+::-webkit-scrollbar-thumb {
+  background: var(--rule);
+  border: 3px solid var(--paper);
+  border-radius: 99px;
 }
-.scrollbar-custom:hover::-webkit-scrollbar-thumb {
-  opacity: 1;
-  background: #888;
-}
-.scrollbar-custom::-webkit-scrollbar-thumb:active {
-  background: #555;
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-faint);
 }
 
-
-.portfolio-item {
-  display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    background: var(--background);
-    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.25); */
-    transition: all 0.2s ease-in-out;
-
-    &:hover {
-      transform: scale(1.02);
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
-    }
-    &:active {
-      transform: scale(0.98);
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
-      filter: brightness(1.1);
-    }
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 1px;
 }
 
-.portfolioImage-wrap {
-  aspect-ratio: 16 / 13;
-  overflow: hidden;
+/* Skip link. Written as a real component rather than sr-only + focus:not-sr-only,
+   because the utility pair did not actually reveal it on focus — leaving the
+   first tab stop on every page invisible (WCAG 2.4.7). */
+.skip-link {
+  position: absolute;
+  left: 0.75rem;
+  top: 0.75rem;
+  z-index: 100;
+  padding: 0.75rem 1.15rem;
+  background: var(--accent);
+  color: var(--paper-raised);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(calc(-100% - 1.5rem));
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .skip-link {
+    transition: none;
+  }
+}
+
+a {
+  color: inherit;
+  text-underline-offset: 0.22em;
+  text-decoration-thickness: 1px;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* --- width-axis type roles ----------------------------------------------- */
+
+.t-statement {
+  font-stretch: 112%;
+  font-weight: 600;
+  letter-spacing: -0.032em;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+
+.t-display {
+  font-stretch: 108%;
+  font-weight: 600;
+  letter-spacing: -0.028em;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+.t-label {
+  font-stretch: 82%;
+  font-weight: 600;
+  font-size: 0.688rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+.t-meta {
+  font-stretch: 88%;
+  font-weight: 500;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+}
+
+.t-prose {
+  font-weight: 400;
+  line-height: 1.65;
+  max-width: var(--measure-prose);
+}
+
+/* --- shell --------------------------------------------------------------- */
+
+.shell {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+  max-width: 96rem;
+}
+@media (min-width: 48rem) {
+  .shell {
+    padding-inline: 2.5rem;
+  }
+}
+@media (min-width: 90rem) {
+  .shell {
+    padding-inline: 3.5rem;
+  }
+}
+
+.rule-top {
+  border-top: 1px solid var(--rule);
+}
+.rule-bottom {
+  border-bottom: 1px solid var(--rule);
+}
+.rule-strong-bottom {
+  border-bottom: 1.5px solid var(--rule-strong);
+}
+
+/* --- actions ------------------------------------------------------------- */
+
+.action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0.85rem 1.35rem;
+  background: var(--accent);
+  color: var(--paper-raised);
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-stretch: 96%;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  border: 0;
+  cursor: pointer;
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+.action:hover {
+  background: var(--accent-hover);
+}
+.action:active {
+  transform: translateY(1px);
+}
+.action[disabled],
+.action[aria-disabled='true'] {
+  background: var(--ink-faint);
+  cursor: not-allowed;
+}
+.action .arrow {
+  transition: transform var(--dur) var(--ease-out);
+}
+.action:hover .arrow {
+  transform: translateX(3px);
+}
+
+.action-quiet {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-decoration: none;
+  border-bottom: 1.5px solid currentColor;
+  padding-bottom: 2px;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.action-quiet:hover {
+  color: var(--accent-hover);
+}
+
+/* WCAG 2.2 SC 2.5.8 wants 24x24 CSS px of target. Text links in lists and
+   breadcrumbs are ~15px tall from line-height alone, so they get their height
+   from padding — invisible in the layout, real to a thumb. */
+.link-target {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  text-decoration: none;
+}
+@media (min-width: 48rem) {
+  .link-target {
+    min-height: 1.75rem;
+  }
+}
+
+/* --- work grid: the one authored moment ---------------------------------- */
+
+.work-grid {
+  display: grid;
+  gap: 2.25rem 1.5rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 40rem) {
+  .work-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 64rem) {
+  .work-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.work-cell {
+  display: block;
+  min-width: 0; /* grid items default to min-content; long titles would push out */
+  text-decoration: none;
+  color: inherit;
+}
+
+.work-frame {
   position: relative;
-  filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.25));
-  img {
-    position: absolute;
-    width: 100%;
-    height:100%;
-    object-fit: cover;
-    object-position: top;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--paper-sunk);
+  border: 1px solid var(--rule);
+}
+
+.work-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition:
+    transform var(--dur) var(--ease-out),
+    filter var(--dur) var(--ease-out),
+    opacity var(--dur) var(--ease-out);
+}
+
+/* every other cell recedes while one is being read — pointer devices only, so
+   a tap on a phone cannot leave the grid stuck in its desaturated state */
+@media (hover: hover) and (pointer: fine) {
+  .work-grid:hover .work-frame img {
+    filter: grayscale(1) contrast(0.94);
+    opacity: 0.62;
+  }
+  .work-cell:hover .work-frame img {
+    filter: none;
+    opacity: 1;
+    transform: scale(1.035);
   }
 }
 
-.portfolio-link {
-  width: 100%;
-  text-align: center;
+/* keyboard reaches the same state on any device. The un-recede rule matches
+   :focus, not :focus-visible — a tap on iOS focuses the link and satisfies
+   :focus-within, but never :focus-visible, which would otherwise leave the
+   whole grid grayed with nothing brought forward. */
+.work-grid:focus-within .work-frame img {
+  filter: grayscale(1) contrast(0.94);
+  opacity: 0.62;
+}
+.work-cell:focus .work-frame img {
+  filter: none;
+  opacity: 1;
+  transform: scale(1.035);
 }
 
-.title-container {
-  container-type: inline-size;
-  h1 {
-    font-size: clamp(2rem, 10cqw, 4rem);
-    @media (min-width: 40rem){
-      /* font-size: clamp(2rem, 10cqw, 4rem); */
+.work-name {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
+/* the hairline under the active name draws itself in from the left */
+.work-underline {
+  position: relative;
+  height: 1px;
+  margin-top: 0.6rem;
+  background: var(--rule);
+}
+.work-underline::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur) var(--ease-out);
+}
+.work-cell:hover .work-underline::after,
+.work-cell:focus .work-underline::after {
+  transform: scaleX(1);
+}
+
+/* touch gets the same authored moment, driven by arrival instead of a pointer:
+   each underline draws itself in as its cell scrolls into view. Gated on real
+   support so browsers without scroll timelines keep the plain hairline rather
+   than firing the animation immediately on load. */
+@keyframes draw-rule {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (hover: none) and (prefers-reduced-motion: no-preference) {
+    .work-underline::after {
+      transition: none;
+      animation: draw-rule 1ms linear both;
+      animation-timeline: view();
+      animation-range: entry 20% cover 38%;
     }
   }
 }
 
-.toggle_nav {
- position: relative;
- z-index: 1000;
+@media (prefers-reduced-motion: reduce) {
+  .work-cell:hover .work-frame img,
+  .work-cell:focus-visible .work-frame img {
+    transform: none;
+  }
+  .work-frame img,
+  .work-underline::after,
+  .action,
+  .action .arrow {
+    transition-duration: 1ms;
+  }
 }
 
-.mobileNav {
-  position: fixed;
-  top: 0;
-  left: 0;
+/* --- entrance: one staggered pass, from an already-visible default -------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* starts from an already-legible default: nothing is ever held invisible
+     waiting on its stagger delay */
+  @keyframes settle {
+    from {
+      transform: translateY(0.55rem);
+    }
+    to {
+      transform: none;
+    }
+  }
+  .settle {
+    animation: settle 640ms var(--ease-out) both;
+    animation-delay: calc(var(--i, 0) * 70ms);
+  }
+}
+
+/* --- facts panel --------------------------------------------------------- */
+
+.facts {
+  border: 1px solid var(--rule);
+  background: var(--paper-raised);
+}
+.facts-row {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr;
+  border-bottom: 1px solid var(--rule);
+}
+.facts-key {
+  padding: 0.6rem 0.75rem;
+  color: var(--ink-muted);
+  border-right: 1px solid var(--rule);
+}
+.facts-value {
+  padding: 0.6rem 0.8rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.45;
+}
+.facts .action {
   width: 100%;
-  height: 100vh;
-  background: var(--background);
-  z-index: 10;
+}
+
+/* --- editorial prose ----------------------------------------------------- */
+
+.prose-niko {
+  --tw-prose-body: var(--ink);
+  --tw-prose-headings: var(--ink);
+  --tw-prose-links: var(--accent);
+  --tw-prose-bold: var(--ink);
+  --tw-prose-counters: var(--ink-faint);
+  --tw-prose-bullets: var(--rule);
+  --tw-prose-hr: var(--rule);
+  --tw-prose-quotes: var(--ink);
+  --tw-prose-quote-borders: var(--accent);
+  --tw-prose-captions: var(--ink-muted);
+}
+.prose-niko :where(h2, h3) {
+  font-stretch: 104%;
+  letter-spacing: -0.02em;
+}
+.prose-niko :where(a) {
+  text-decoration-color: var(--accent);
+}
+
+/* --- form ---------------------------------------------------------------- */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.field label {
+  color: var(--ink-muted);
+}
+.field input,
+.field textarea {
+  width: 100%;
+  padding: 0.7rem 0.8rem;
+  background: var(--paper-raised);
+  border: 1px solid var(--rule);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.9375rem;
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out);
+}
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--ink-faint);
+}
+.field input:hover,
+.field textarea:hover {
+  border-color: var(--ink-faint);
+}
+.field input:focus,
+.field textarea:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-color: transparent;
+}
+.field-error {
+  color: var(--signal-error);
+  font-size: 0.8125rem;
+}
+
+/* --- mobile nav ---------------------------------------------------------- */
+
+.mobile-sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: var(--paper);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  transition: all 0.2s ease-in-out;
-
-  &.isOpen__true {
-    transform: translateX(0);
-  }
-  &.isOpen__false {
-    transform: translateX(-100%);
-  }
+  gap: 0.25rem;
+  padding: 6rem 1.5rem 2rem;
+  transition: transform var(--dur) var(--ease-out);
+}
+.mobile-sheet[data-open='false'] {
+  transform: translateY(-101%);
+  visibility: hidden;
+}
+.mobile-sheet[data-open='true'] {
+  transform: translateY(0);
+  visibility: visible;
 }

@@ -1,53 +1,52 @@
 import { Analytics } from '@vercel/analytics/next';
 import { Metadata } from 'next';
 import '../ui/globals.css';
-import Header from '../components/SiteHeader';
-
+import { archivo } from '../ui/fonts';
+import SiteHeader from '../components/SiteHeader';
+import SiteFooter from '../components/SiteFooter';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://byniko.com'),
   title: {
-    default: 'ByNiko',
-    template: '%s | ByNiko',
+    default: 'byNiko — websites and brands for galleries, nonprofits and small businesses',
+    template: '%s · byNiko',
   },
-
-  description: 'website & brand development for the arts',
+  description:
+    'I build websites, brands and custom applications for galleries, nonprofits and small businesses. Independent practice, since 2010.',
   openGraph: {
     type: 'website',
     url: 'https://byniko.com',
-    title: 'ByNiko',
-    description: 'website & brand development for the arts',
+    title: 'byNiko',
+    description:
+      'Websites, brands and custom applications for galleries, nonprofits and small businesses. Independent practice, since 2010.',
     images: [
       {
         url: 'https://byniko.com/circle-logo.png',
         width: 1200,
         height: 1200,
-        alt: 'ByNiko',
+        alt: 'byNiko',
       },
     ],
-    siteName: 'ByNiko',
+    siteName: 'byNiko',
   },
-  icons: {
-    icon: '/circle-logo.png',
-  },
+  icons: { icon: '/circle-logo.png' },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={archivo.variable}>
       <body>
-        <div className="static-container">
-          <div className="static-container--inner py-4  relative">
-            <div id="scroll-container" className="scrollbar-custom">
-              <Header />
-              <div className="page-content">{children}</div>
-              <Analytics />
-            </div>
-          </div>
-        </div>
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
+        <SiteHeader />
+        <main id="main" tabIndex={-1}>
+          {children}
+        </main>
+        <SiteFooter />
+        <Analytics />
       </body>
     </html>
   );
