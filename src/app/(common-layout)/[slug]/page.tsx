@@ -1,4 +1,4 @@
-import { getPostBySlug } from '@/lib/contentful';
+import { getAllPageSlugs, getPostBySlug } from '@/lib/contentful';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Document } from '@contentful/rich-text-types';
@@ -6,6 +6,15 @@ import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 import { renderOptions } from '@/components/rich-text/renderOptions';
 import { PageFields } from '@/../declarations';
 import FactsPanel from '@/components/FactsPanel/FactsPanel';
+
+/** About, Services, and any future flat CMS page, built as static HTML. */
+export async function generateStaticParams() {
+  const slugs = await getAllPageSlugs();
+  return slugs.map((slug) => ({ slug }));
+}
+
+export const dynamicParams = true;
+export const revalidate = 300;
 
 export async function generateMetadata({
   params,
@@ -38,7 +47,7 @@ export default async function PostPage({
     <>
       <header className="rule-bottom pb-10 md:pb-14">
         <h1
-          className="t-statement text-[2.5rem] sm:text-[3.25rem]"
+          className="t-statement"
           style={{ maxWidth: 'min(16ch, 100%)' }}
         >
           {title}
@@ -55,7 +64,7 @@ export default async function PostPage({
       </div>
 
       <div className="rule-top mt-16 flex flex-col items-start justify-between gap-6 pt-10 md:flex-row md:items-center">
-        <p className="t-display text-[1.5rem]" style={{ maxWidth: 'min(22ch, 100%)' }}>
+        <p className="t-display t-display--sm" style={{ maxWidth: 'min(22ch, 100%)' }}>
           Tell me what you&rsquo;re making.
         </p>
         <Link href="/contact" className="action no-underline">

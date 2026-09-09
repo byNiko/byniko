@@ -72,7 +72,7 @@ export default function ContactForm() {
   if (!FORM_ID) {
     return (
       <div className="facts p-8" role="status">
-        <h2 className="t-display text-[1.5rem]" style={{ fontStretch: '104%' }}>
+        <h2 className="t-display t-display--sm">
           The form isn&rsquo;t connected.
         </h2>
         <p className="t-prose mt-3 text-ink-muted">
@@ -103,8 +103,8 @@ export default function ContactForm() {
       {state.succeeded ? (
         <div className="facts p-8">
           <h2
-            className="t-display text-[1.5rem]"
-            style={{ fontStretch: '104%' }}
+            className="t-display t-display--sm"
+           
             tabIndex={-1}
             ref={(node) => node?.focus()}
           >

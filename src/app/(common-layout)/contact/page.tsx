@@ -12,7 +12,7 @@ export default function Contact() {
     <>
       <header className="rule-bottom pb-10 md:pb-14">
         <h1
-          className="t-statement text-[2.5rem] sm:text-[3.25rem]"
+          className="t-statement"
           style={{ maxWidth: 'min(16ch, 100%)' }}
         >
           Tell me what you&rsquo;re making.
@@ -21,7 +21,7 @@ export default function Contact() {
 
       <div className="mt-12 grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-20">
         <div>
-          <p className="t-prose text-[1.0625rem] text-ink-muted">
+          <p className="t-prose t-lede text-ink-muted">
             Every project starts with a conversation. Whether you have a fully
             formed brief or just a sense that the current site isn&rsquo;t
             working, send it over — I read everything myself.
@@ -30,8 +30,7 @@ export default function Contact() {
           <dl className="mt-10">
             <div className="rule-top py-5">
               <dt
-                className="text-[1.0625rem] font-semibold tracking-[-0.015em]"
-                style={{ fontStretch: '102%' }}
+                className="t-title"
               >
                 What happens next
               </dt>
@@ -43,8 +42,7 @@ export default function Contact() {
             </div>
             <div className="rule-top py-5">
               <dt
-                className="text-[1.0625rem] font-semibold tracking-[-0.015em]"
-                style={{ fontStretch: '102%' }}
+                className="t-title"
               >
                 Helpful to include
               </dt>

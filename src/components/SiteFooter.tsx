@@ -7,8 +7,8 @@ export default function SiteFooter() {
       <div className="shell grid gap-10 py-12 md:grid-cols-[minmax(0,1fr)_auto] md:gap-20 md:py-14">
         <div>
           <p
-            className="text-[1.15rem] font-bold tracking-[-0.02em]"
-            style={{ fontStretch: '104%' }}
+            className="wordmark"
+           
           >
             byNiko
           </p>

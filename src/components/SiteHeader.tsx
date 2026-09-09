@@ -70,8 +70,8 @@ export default function SiteHeader() {
         <div className="flex items-baseline gap-4">
           <Link
             href="/"
-            className="text-[1.15rem] font-bold tracking-[-0.02em] no-underline"
-            style={{ fontStretch: '104%' }}
+            className="wordmark no-underline"
+           
           >
             byNiko
           </Link>
@@ -161,10 +161,9 @@ export default function SiteHeader() {
               tabIndex={open ? 0 : -1}
               aria-current={active ? 'page' : undefined}
               className={clsx(
-                'rule-bottom py-4 text-3xl no-underline',
+                'rule-bottom py-4',
                 active ? 'text-accent' : 'text-ink',
               )}
-              style={{ fontStretch: '106%', fontWeight: 600, letterSpacing: '-0.02em' }}
             >
               {link.name}
             </Link>

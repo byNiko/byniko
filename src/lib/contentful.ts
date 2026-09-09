@@ -78,6 +78,20 @@ function report(operation: string, error: unknown) {
 }
 
 /**
+ * Thrown when the CMS could not be reached, as opposed to answering with
+ * nothing. Detail routes let this propagate so an outage returns 5xx —
+ * which crawlers retry — instead of 404, which they treat as permanent.
+ * List routes never throw: an empty grid with an honest explanation beats
+ * an error page on the homepage.
+ */
+export class CmsUnavailableError extends Error {
+  constructor(operation: string, options?: { cause?: unknown }) {
+    super(`Contentful unavailable: ${operation}`, options);
+    this.name = 'CmsUnavailableError';
+  }
+}
+
+/**
  * Order comes from the single `workIndex` entry, whose `projects` field is
  * drag-sortable in Contentful. Anything missing from that list is appended, so
  * a newly published project is never invisible — just unplaced. `include: 3`
@@ -155,6 +169,12 @@ export async function getHomeContent(): Promise<HomeContent> {
   }
 }
 
+/**
+ * Detail lookups return `undefined` only for a genuine miss — the CMS
+ * answered and holds no such entry, which is a real 404. A failure to reach
+ * the CMS throws instead, so the route surfaces 5xx rather than telling a
+ * crawler the project is permanently gone.
+ */
 export async function getPortfolioItem(slug: string) {
   if (!client || !slug) return undefined;
 
@@ -169,7 +189,9 @@ export async function getPortfolioItem(slug: string) {
     return entries.items?.[0];
   } catch (error) {
     report(`getPortfolioItem(${slug})`, error);
-    return undefined;
+    throw new CmsUnavailableError(`getPortfolioItem(${slug})`, {
+      cause: error,
+    });
   }
 }
 
@@ -186,7 +208,32 @@ export async function getPostBySlug(slug: string) {
     return entries.items?.[0];
   } catch (error) {
     report(`getPostBySlug(${slug})`, error);
-    return undefined;
+    throw new CmsUnavailableError(`getPostBySlug(${slug})`, { cause: error });
+  }
+}
+
+/**
+ * Slugs for every `page` entry, used to prerender the flat CMS routes.
+ * Returns empty on failure rather than throwing: a build during a CMS blip
+ * should fall back to on-demand rendering, not fail outright.
+ */
+export async function getAllPageSlugs(): Promise<string[]> {
+  if (!client) return [];
+
+  try {
+    const entries = await client.getEntries({
+      content_type: 'page',
+      locale: 'en-US',
+      limit: 100,
+      select: ['fields.slug'],
+    });
+
+    return (entries.items ?? [])
+      .map((item) => item.fields?.slug)
+      .filter((slug): slug is string => typeof slug === 'string' && !!slug);
+  } catch (error) {
+    report('getAllPageSlugs', error);
+    return [];
   }
 }
 
