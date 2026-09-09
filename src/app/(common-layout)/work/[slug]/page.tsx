@@ -57,7 +57,7 @@ export default async function PortfolioPage({
 
       <header className="rule-bottom pb-10">
         <h1
-          className="t-statement text-[2.5rem] sm:text-[3.5rem] lg:text-[4rem]"
+          className="t-statement t-statement--feature"
           style={{ maxWidth: 'min(15ch, 100%)' }}
         >
           {title}

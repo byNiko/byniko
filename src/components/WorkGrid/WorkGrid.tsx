@@ -25,8 +25,8 @@ export default function WorkGrid({
     return (
       <div className="facts max-w-[min(48ch,100%)] p-8">
         <h3
-          className="t-display text-[1.375rem]"
-          style={{ fontStretch: '104%' }}
+          className="t-display t-display--xs"
+         
         >
           The project list isn&rsquo;t loading.
         </h3>
@@ -82,8 +82,8 @@ export default function WorkGrid({
 
             <div className="work-name">
               <h3
-                className="min-w-0 break-words text-[1.0625rem] font-semibold tracking-[-0.016em]"
-                style={{ fontStretch: '102%', overflowWrap: 'anywhere' }}
+                className="t-title min-w-0 break-words"
+                style={{ overflowWrap: 'anywhere' }}
               >
                 {title}
               </h3>

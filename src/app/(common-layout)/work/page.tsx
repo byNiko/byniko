@@ -17,10 +17,10 @@ export default async function Work() {
   return (
     <>
       <header className="rule-bottom pb-10 md:pb-14">
-        <h1 className="t-statement text-[2.5rem] sm:text-[3.25rem]" style={{ maxWidth: 'min(16ch, 100%)' }}>
+        <h1 className="t-statement" style={{ maxWidth: 'min(16ch, 100%)' }}>
           Selected work
         </h1>
-        <p className="t-prose mt-5 text-[1.0625rem] text-ink-muted">
+        <p className="t-prose mt-5 t-lede text-ink-muted">
           Every project below I built myself — brand, design, front-end, and the
           custom applications where off-the-shelf tools ran out.
         </p>

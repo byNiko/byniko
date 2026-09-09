@@ -20,13 +20,13 @@ export default async function Home() {
         <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_23rem] lg:gap-20">
           <div>
             <h1
-              className="settle t-statement text-[2.5rem] sm:text-[3.25rem] lg:text-[3.75rem]"
+              className="settle t-statement t-statement--hero"
               style={{ maxWidth: 'var(--measure-statement)', ['--i' as string]: 0 }}
             >
               {headline}
             </h1>
             <p
-              className="settle t-prose mt-7 whitespace-pre-line text-[1.0625rem] text-ink-muted"
+              className="settle t-prose mt-7 whitespace-pre-line t-lede text-ink-muted"
               style={{ ['--i' as string]: 1 }}
             >
               {intro}
@@ -64,7 +64,7 @@ export default async function Home() {
       {/* What I do --------------------------------------------------------- */}
       <section className="shell rule-top py-14 md:py-20">
         <div className="grid gap-10 lg:grid-cols-[23rem_minmax(0,1fr)] lg:gap-20">
-          <h2 className="t-display text-[1.75rem] md:text-[2.25rem]">
+          <h2 className="t-display">
             Four things, done by one person.
           </h2>
           <dl className="grid gap-0 sm:grid-cols-2">
@@ -88,8 +88,7 @@ export default async function Home() {
             ].map((s) => (
               <div key={s.t} className="rule-top py-5 pr-8">
                 <dt
-                  className="text-[1.0625rem] font-semibold tracking-[-0.015em]"
-                  style={{ fontStretch: '102%' }}
+                  className="t-title"
                 >
                   {s.t}
                 </dt>
@@ -106,7 +105,7 @@ export default async function Home() {
       <section className="shell rule-top py-16 md:py-24">
         <div className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
           <h2
-            className="t-statement text-[2rem] sm:text-[2.75rem]"
+            className="t-statement t-statement--sm"
             style={{ maxWidth: 'min(18ch, 100%)' }}
           >
             Tell me what you&rsquo;re making.

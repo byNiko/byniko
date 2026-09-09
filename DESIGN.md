@@ -18,14 +18,49 @@ colors:
 typography:
   statement:
     fontFamily: "Archivo, system-ui, sans-serif"
-    fontSize: "2.5rem"
+    fontSize: "clamp(2.5rem, 1.9rem + 1.5vw, 3.25rem)"
+    fontWeight: 600
+    lineHeight: 1.06
+    letterSpacing: "-0.032em"
+    fontVariation: "'wdth' 112"
+  statement-hero:
+    fontFamily: "Archivo, system-ui, sans-serif"
+    fontSize: "clamp(2.5rem, 1.5rem + 2.5vw, 3.75rem)"
+    fontWeight: 600
+    lineHeight: 1.06
+    letterSpacing: "-0.032em"
+    fontVariation: "'wdth' 112"
+  statement-feature:
+    fontFamily: "Archivo, system-ui, sans-serif"
+    fontSize: "clamp(2.5rem, 1.3rem + 3vw, 4rem)"
+    fontWeight: 600
+    lineHeight: 1.06
+    letterSpacing: "-0.032em"
+    fontVariation: "'wdth' 112"
+  statement-sm:
+    fontFamily: "Archivo, system-ui, sans-serif"
+    fontSize: "clamp(2rem, 1.4rem + 1.5vw, 2.75rem)"
     fontWeight: 600
     lineHeight: 1.06
     letterSpacing: "-0.032em"
     fontVariation: "'wdth' 112"
   display:
     fontFamily: "Archivo, system-ui, sans-serif"
-    fontSize: "1.75rem"
+    fontSize: "clamp(1.75rem, 1.35rem + 1vw, 2.25rem)"
+    fontWeight: 600
+    lineHeight: 1.1
+    letterSpacing: "-0.028em"
+    fontVariation: "'wdth' 108"
+  display-sm:
+    fontFamily: "Archivo, system-ui, sans-serif"
+    fontSize: "1.5rem"
+    fontWeight: 600
+    lineHeight: 1.1
+    letterSpacing: "-0.028em"
+    fontVariation: "'wdth' 108"
+  display-xs:
+    fontFamily: "Archivo, system-ui, sans-serif"
+    fontSize: "1.375rem"
     fontWeight: 600
     lineHeight: 1.1
     letterSpacing: "-0.028em"
@@ -37,6 +72,13 @@ typography:
     lineHeight: 1.4
     letterSpacing: "-0.015em"
     fontVariation: "'wdth' 102"
+  lede:
+    fontFamily: "Archivo, system-ui, sans-serif"
+    fontSize: "1.0625rem"
+    fontWeight: 400
+    lineHeight: 1.65
+    letterSpacing: "normal"
+    fontVariation: "'wdth' 100"
   body:
     fontFamily: "Archivo, system-ui, sans-serif"
     fontSize: "1.0625rem"
@@ -44,6 +86,13 @@ typography:
     lineHeight: 1.65
     letterSpacing: "normal"
     fontVariation: "'wdth' 100"
+  wordmark:
+    fontFamily: "Archivo, system-ui, sans-serif"
+    fontSize: "1.15rem"
+    fontWeight: 700
+    lineHeight: 1.2
+    letterSpacing: "-0.02em"
+    fontVariation: "'wdth' 104"
   label:
     fontFamily: "Archivo, system-ui, sans-serif"
     fontSize: "0.688rem"
@@ -58,6 +107,34 @@ typography:
     lineHeight: 1.5
     letterSpacing: "0.02em"
     fontVariation: "'wdth' 88"
+  control:
+    fontFamily: "Archivo, system-ui, sans-serif"
+    fontSize: "0.875rem"
+    fontWeight: 600
+    lineHeight: 1.4
+    letterSpacing: "0.01em"
+    fontVariation: "'wdth' 96"
+  input:
+    fontFamily: "Archivo, system-ui, sans-serif"
+    fontSize: "0.9375rem"
+    fontWeight: 400
+    lineHeight: 1.5
+    letterSpacing: "normal"
+    fontVariation: "'wdth' 100"
+  error:
+    fontFamily: "Archivo, system-ui, sans-serif"
+    fontSize: "0.8125rem"
+    fontWeight: 400
+    lineHeight: 1.5
+    letterSpacing: "normal"
+    fontVariation: "'wdth' 100"
+  navMobile:
+    fontFamily: "Archivo, system-ui, sans-serif"
+    fontSize: "1.875rem"
+    fontWeight: 600
+    lineHeight: 1.2
+    letterSpacing: "-0.02em"
+    fontVariation: "'wdth' 106"
 rounded:
   none: "0"
   focus: "1px"
@@ -70,6 +147,8 @@ spacing:
   section-y-md: "5rem"
   grid-gap-x: "1.5rem"
   grid-gap-y: "2.25rem"
+  target-touch: "2.75rem"
+  target-pointer: "1.75rem"
 components:
   action:
     backgroundColor: "{colors.accent}"
@@ -88,6 +167,14 @@ components:
     padding: "0 0 2px 0"
   action-quiet-hover:
     textColor: "{colors.accent-hover}"
+  link-target:
+    height: "{spacing.target-touch}"
+    rounded: "{rounded.none}"
+  skip-link:
+    backgroundColor: "{colors.accent}"
+    textColor: "{colors.paper-raised}"
+    rounded: "{rounded.none}"
+    padding: "0.75rem 1.15rem"
   field-input:
     backgroundColor: "{colors.paper-raised}"
     textColor: "{colors.ink}"
@@ -137,29 +224,33 @@ The governing idea is **subtraction**. Every device this system might have reach
 
 The chrome is deliberately colorless because the content is not. Nine project screenshots supply every chromatic event on the site, and the interface around them is built to lose that contest gracefully. The one place the system permits itself an authored gesture is the work grid, where hovering or focusing a project pulls it forward while its siblings recede — one orchestrated moment, spent once, instead of a dozen small hovers scattered everywhere.
 
+The system is also **defined in one place**. Every type role carries its own fluid size in `src/ui/globals.css`; no page or component declares a font size. Every reveal-on-focus, every touch target, every failure state is a named component in that same stylesheet rather than a local improvisation, so a surface that fails — an unreachable CMS, a missing entry, a thrown render — still lands on the ruled sheet instead of on the browser's default page.
+
 **Key Characteristics:**
 - Cool paper ground with ink type; the page is never white-on-white or dark
 - Hairline rules as the sole division device — no cards, no shadows, no radius on content surfaces
 - One superfamily (Archivo variable), hierarchy from the `wdth` axis rather than a second face
+- One fluid type ramp defined in the stylesheet; call sites name a role, never a size
 - One green accent carrying every action, link and active state
 - Square corners everywhere content lives
 - Motion that is orchestrated and rare, never ambient
 - Content is never held invisible waiting on an animation
+- Failure is a designed state: every route has a boundary in the house language
 
 ## Colors
 
 A near-neutral paper-and-ink field with exactly one saturated voice; all remaining chroma on any page comes from project imagery.
 
 ### Primary
-- **Practice Green** (`{colors.accent}`): The single accent. It carries every primary action button, every quiet inline action, every prose link, the active-state underline in the nav, the focus ring, the work-grid underline as it draws in, the text selection background, and the caret. Nothing else in the interface is saturated. Its darker companion **Practice Green Deep** (`{colors.accent-hover}`) is the hover state and only the hover state. **Green Wash** (`{colors.accent-soft}`) is a defined tint held in reserve for accent-tinted grounds; it stays rare by design.
+- **Practice Green** (`{colors.accent}`): The single accent. It carries every primary action button, every quiet inline action, every prose link, the active-state underline in the nav, the focus ring, the skip link's ground, the work-grid underline as it draws in, the text selection background, and the caret. Nothing else in the interface is saturated. Its darker companion **Practice Green Deep** (`{colors.accent-hover}`) is the hover state and only the hover state. **Green Wash** (`{colors.accent-soft}`) is a defined tint held in reserve for accent-tinted grounds; it stays rare by design.
 
 ### Tertiary
-- **Signal Red** (`{colors.signal-error}`): The one deliberate chromatic exception to the single-accent rule, admitted as a named decision because an error has to read as an error. It appears only on form validation messages (`.field-error`) and nowhere else — not on borders, not on icons, not as a warning tint. It clears WCAG AA on the paper ground.
+- **Signal Red** (`{colors.signal-error}`): The one deliberate chromatic exception to the single-accent rule, admitted as a named decision because an error has to read as an error. It appears only on form validation messages (`.field-error`) and nowhere else — not on borders, not on icons, not as a warning tint, and not on the error boundaries, which are set in plain ink. It clears WCAG AA on the paper ground.
 
 ### Neutral
 - **Cool Paper** (`{colors.paper}`): The page ground. Every band of the site sits on it.
 - **Raised Paper** (`{colors.paper-raised}`): Pure white, used only where a surface must read as *on* the sheet rather than *as* the sheet — the facts panel, the contact form body, form inputs — and always in combination with a hairline border rather than a shadow.
-- **Sunk Paper** (`{colors.paper-sunk}`): The empty state behind a project image inside its frame, so an unloaded or missing screenshot reads as a recess rather than a hole.
+- **Sunk Paper** (`{colors.paper-sunk}`): The empty state behind a project image inside its frame, so an unloaded or missing screenshot reads as a recess rather than a hole. Also the ground of the case-study featured image and every static-gallery tile.
 - **Ink** (`{colors.ink}`): Body and heading text, and the strong section rule.
 - **Muted Ink** (`{colors.ink-muted}`): Secondary prose, supporting descriptions, inactive nav links, facts keys.
 - **Faint Ink** (`{colors.ink-faint}`): The quietest text tier — counts, footer meta, placeholders, the "View" affordance in the work grid, disabled action grounds.
@@ -183,19 +274,24 @@ A near-neutral paper-and-ink field with exactly one saturated voice; all remaini
 
 **Character:** One grotesque doing every job, distinguished by how wide it is set rather than by what it is. Expanded widths read as confident and built; condensed tracked caps read as clerical and precise; the normal width in between is plain and unremarkable on purpose. The effect is a document typeset by someone paying attention, not a page assembled from a type pairing.
 
-Width is authored in CSS as `font-stretch` percentages on the `.t-*` role classes; the frontmatter records the same values in `fontVariation` notation.
+Width is authored in CSS as `font-stretch` percentages on the `.t-*` role classes; the frontmatter records the same values in `fontVariation` notation. **Size is authored the same way.** Every role owns its size in `src/ui/globals.css`, fluidly via `clamp()`, and no page or component declares a font size. Each curve is tuned to reach its floor at 640px and its ceiling at 1440px, so the ramp is continuous between those points and pinned outside them.
 
 ### Hierarchy
-- **Statement** (600, `wdth` 112, -0.032em, 1.06 line-height, balanced wrapping): Page-opening headlines only — the home statement, page `h1`s, the closing "Tell me what you're making." Sized per surface from 2rem to 4rem; it is always the widest and tightest thing on the page.
-- **Display** (600, `wdth` 108, -0.028em, 1.1): Section headings below the page statement, and the contact form's success heading. One notch narrower and looser than Statement so the two never read as peers.
-- **Title** (600, `wdth` 102, -0.015em): The recurring inline heading — project names in the work grid, service names in the definition lists. Not a `.t-*` class; applied directly at 1.0625rem.
-- **Body / Prose** (400, `wdth` 100, 1.65 line-height, capped at `min(54ch, 100%)`): All running text. The measure cap is part of the role, not a per-surface decision.
-- **Label** (600, `wdth` 82, 0.688rem, 0.15em tracking, uppercase, 1.4): Real section headings that name a region and are marked up as such (the `h2`s "Selected work", "Pages", "More from this project"), facts-panel keys, form field labels, the breadcrumb, project counts, footer meta. This is the system's only uppercase. It is a heading and labelling role, never a decorative line stacked above a headline.
-- **Meta** (500, `wdth` 88, 0.75rem, 0.02em): Sentence-case supporting data — the services list under each project, the required-fields note on the form.
+- **Statement** (`.t-statement`, 600, `wdth` 112, -0.032em, 1.06, balanced wrapping): Page-opening headlines only. Base curve `clamp(2.5rem, 1.9rem + 1.5vw, 3.25rem)`, with three modifiers that change nothing but the curve: `--hero` (`clamp(2.5rem, 1.5rem + 2.5vw, 3.75rem)`) for the homepage opener, `--feature` (`clamp(2.5rem, 1.3rem + 3vw, 4rem)`) for a case-study title that is the whole first viewport, and `--sm` (`clamp(2rem, 1.4rem + 1.5vw, 2.75rem)`) for a closing statement subordinate to the one that opened the page. It is always the widest and tightest thing on the page.
+- **Display** (`.t-display`, 600, `wdth` 108, -0.028em, 1.1): Section headings below the page statement, and the contact form's success heading. Base curve `clamp(1.75rem, 1.35rem + 1vw, 2.25rem)`; the two fixed modifiers `--sm` (1.5rem) and `--xs` (1.375rem) are for headings inside a column too narrow to justify a fluid curve. One notch narrower and looser than Statement so the two never read as peers.
+- **Title** (`.t-title`, 600, `wdth` 102, -0.015em, 1.4, 1.0625rem): The recurring inline heading — project names in the work grid, service names in the definition lists, list rows. Now a real class; it was previously three declarations repeated at six call sites.
+- **Lede** (`.t-lede`, 1.0625rem): The opening paragraph under a statement. It is Body's size and weight carrying a positional job, which is why it is its own class rather than a size on the paragraph.
+- **Body / Prose** (`.t-prose`, 400, `wdth` 100, 1.65 line-height, capped at `min(54ch, 100%)`): All running text. The measure cap is part of the role, not a per-surface decision.
+- **Wordmark** (`.wordmark`, 700, `wdth` 104, -0.02em, 1.15rem): The practice name, shared by the masthead and the footer so the two can never drift apart.
+- **Label** (`.t-label`, 600, `wdth` 82, 0.688rem, 0.15em tracking, uppercase, 1.4): Real section headings that name a region and are marked up as such (the `h2`s "Selected work", "Pages", "More from this project"), facts-panel keys, form field labels, the breadcrumb, project counts, footer meta. This is the system's only uppercase. It is a heading and labelling role, never a decorative line stacked above a headline.
+- **Meta** (`.t-meta`, 500, `wdth` 88, 0.75rem, 0.02em): Sentence-case supporting data — the services list under each project, the required-fields note on the form.
+- **Mobile nav item** (`.mobile-sheet a:not(.action)`, 600, `wdth` 106, -0.02em, 1.875rem): Scoped to the sheet, because it is a size that exists nowhere else and should not become a general role.
 
 ### Named Rules
 
 **The One Family Rule.** Hierarchy comes from the width axis, never from a second typeface. A new role gets a new `font-stretch` value and weight, not a new family. There is no serif, no mono, no display face in this system.
+
+**The Ramp Lives in the Stylesheet Rule.** A component names a role; it never declares a size. If a surface needs a size the ramp does not have, add a modifier to the role in `src/ui/globals.css` (`.t-statement--feature`) rather than a literal at the call site — and give it a `clamp()`, not a breakpoint step. There are exactly two admitted exceptions, both structural: `src/app/global-error.tsx` uses inline styles because it replaces the whole document and cannot assume the stylesheet loaded, and `src/components/GalleryStatic/style.css` sizes the lightbox close glyph inside a component that renders over a dark field outside the paper world.
 
 **The Narrow Caps Rule.** Uppercase belongs to Label and Meta-adjacent roles only, and always with 0.15em tracking at condensed width. Body text, statements, display headings and buttons are never uppercased. A Label must be labelling something structural — a section, a field, a key, a count. Never set a Label above a headline as a decorative kicker.
 
@@ -207,27 +303,31 @@ The site is a single-column stack of full-bleed horizontal bands, each separated
 
 Within a band, the recurring device is a two-column asymmetric split that collapses to a stack: content plus a fixed-width sidebar (`minmax(0,1fr)` beside `23rem` on the home page, `20rem` on case studies and flat pages), with a 3rem–5rem gap, promoted at the `lg` breakpoint. On flat pages and case studies the sidebar is sticky at `top-28`. Case studies invert source order on small screens so the facts panel arrives before the body.
 
-The work grid is 1 column, 2 columns at 40rem, 3 columns at 64rem, with an asymmetric gap (2.25rem row, 1.5rem column) so rows breathe more than columns. Each cell's image sits in a 16:10 frame.
+The work grid is 1 column, 2 columns at 40rem, 3 columns at 64rem, with an asymmetric gap (2.25rem row, 1.5rem column) so rows breathe more than columns. Each cell's image sits in a 16:10 frame. The case-study static gallery uses the same material at a smaller module: `repeat(auto-fill, minmax(min(100%, 15rem), 1fr))` with a 1rem gap.
 
-Vertical rhythm is section-scale rather than a fine spacing scale: bands run `3.5rem` top and bottom, opening to `5rem` at the `md` breakpoint and `6rem` on the closing band. Inside a band, spacing comes from Tailwind's default 0.25rem-based utilities; there is no bespoke spacing token set beyond the shell and section values.
+Vertical rhythm is section-scale rather than a fine spacing scale: bands run `3.5rem` top and bottom, opening to `5rem` at the `md` breakpoint and `6rem` on the closing band. Inside a band, spacing comes from Tailwind's default 0.25rem-based utilities; there is no bespoke spacing token set beyond the shell, section and target values.
 
 The header is sticky at the top with a translucent paper background (92% opacity) and a light backdrop blur, closed by a hairline. It is 4rem tall, 4.5rem at `md`. Below `md` the nav becomes a full-screen sheet that translates down from above; the sheet is always mounted and hidden by transform plus `visibility`, with its links taken out of the tab order while closed.
+
+Interactive text has a minimum size independent of its type size: `.link-target` gives a text link in a list or breadcrumb a `2.75rem` min-height on touch, relaxing to `1.75rem` at 48rem where a pointer is likely. The padding is invisible in the layout because the link is `inline-flex` and its line box is unchanged; it exists only for the thumb. Measured sitewide: zero targets below the WCAG 2.2 SC 2.5.8 24×24 floor.
 
 ### Named Rules
 
 **The Shell Rule.** Every full-width band is a bare section with `.shell` inside it. Bands own the background and the hairline; the shell owns the horizontal constraint. Do not invent a second container width.
 
-**The Bounded Measure Rule.** Every `ch`-based measure is wrapped in `min(…, 100%)` — including the tokens `--measure-prose` (54ch) and `--measure-statement` (20ch), and every inline `min(15ch, 100%)`-style cap on a page heading. A bare `ch` measure does not shrink below its own character count and overflowed narrow viewports; the `min()` wrapper is what makes these headlines safe on a phone. Never write a bare `ch` max-width.
+**The Bounded Measure Rule.** Every `ch`-based measure is wrapped in `min(…, 100%)` — including the tokens `--measure-prose` (54ch) and `--measure-statement` (20ch), the 68ch long-form cap, and every inline `min(15ch, 100%)`-style cap on a page heading. A bare `ch` measure does not shrink below its own character count and overflowed narrow viewports; the `min()` wrapper is what makes these headlines safe on a phone. Verified: there is no bare `ch` value anywhere in `src/`. Never write one.
+
+**The Thumb Floor Rule.** A text link that is not already a button gets `.link-target`. Height comes from padding on an `inline-flex` box, never from line-height or font-size — the type role is not allowed to change to satisfy a target size.
 
 ## Elevation & Depth
 
-**This system has no elevation.** There is zero `box-shadow` anywhere in the application source, and that is a load-bearing property of the world rather than an omission. Depth is expressed three ways, in ascending strength:
+**This system has no elevation.** There is zero `box-shadow` and zero `drop-shadow` anywhere in `src/` — verified, including the component stylesheets — and that is a load-bearing property of the world rather than an omission. Depth is expressed three ways, in ascending strength:
 
 1. **Hairline** (`1px solid {colors.rule}`) — the default and near-universal division. Section boundaries, panel borders, table-like rows, input strokes, image frames.
 2. **Tonal shift** — a surface reads as raised by being `{colors.paper-raised}` (white) against the paper ground, or recessed by being `{colors.paper-sunk}`. Always combined with a hairline; the tone alone is too quiet to define an edge.
 3. **Strong rule** (`1.5px solid {colors.rule-strong}`) — reserved for the heading boundary above a major content region.
 
-The only translucency in the system is the sticky header's 92% paper background with a small backdrop blur, which exists so scrolled content does not collide with the masthead.
+The only translucency in the system is the sticky header's 92% paper background with a small backdrop blur, which exists so scrolled content does not collide with the masthead, plus the 45%-white hairline on the lightbox close control, which is the same device translated onto a dark field.
 
 ### Named Rules
 
@@ -237,11 +337,11 @@ The only translucency in the system is the sticky header's 92% paper background 
 
 ## Shapes
 
-Square. Content surfaces have `border-radius: 0` without exception — buttons, inputs, the facts panel, image frames, the mobile sheet. There is no radius scale to reach for, and no "just a little rounding" tier.
+Square. Content surfaces have `border-radius: 0` without exception — buttons, inputs, the facts panel, image frames, the mobile sheet, the skip link, and the lightbox slide, which was explicitly squared to match.
 
 Two non-content exceptions exist and are deliberate, both on browser-chrome affordances rather than on the design's own surfaces: the focus ring softens by 1px so a 2px outline does not produce visibly sharp corners on inline text, and the custom scrollbar thumb is fully pilled at 99px with a 3px paper border so it reads as a thumb.
 
-Form language is otherwise built from straight lines: full-width hairline dividers, a two-column hairline grid in the facts panel (a `6.5rem` key column beside a fluid value column), and 16:10 image frames. The only curve anywhere in the interface is the arrow glyph inside actions, and the only motion path is linear translation or uniform scale.
+Form language is otherwise built from straight lines: full-width hairline dividers, a two-column hairline grid in the facts panel (a `6.5rem` key column beside a fluid value column), 16:10 image frames, and a 2.75rem square close control. The only curve anywhere in the interface is the arrow glyph inside actions, and the only motion path is linear translation or uniform scale.
 
 ## Components
 
@@ -256,6 +356,12 @@ Form language is otherwise built from straight lines: full-width hairline divide
 - **Disabled:** Ground becomes `{colors.ink-faint}`, cursor `not-allowed`. Both `[disabled]` and `[aria-disabled="true"]` are styled, so a busy-but-focusable button looks right.
 - **Quiet (`.action-quiet`):** Green text on paper with a 1.5px underline in `currentColor` and 2px of standoff. Used for tertiary navigation moves ("All 9 projects →", footer "Start a project"). Hover deepens the green only; the rule is already there and does not animate in.
 - **Full-width:** Inside the facts panel and the mobile sheet, `.action` stretches to 100%.
+
+### Skip Link
+
+**Character:** The first tab stop on every page, and the only element in the system whose entire job is to appear.
+
+`.skip-link` is a real component rather than the `sr-only` + `focus:not-sr-only` utility pair, because that pair does not reveal on focus: at equal specificity `.sr-only` wins on source order and the link stays clipped, leaving the first tab stop invisible (WCAG 2.4.7). Instead it is a normal absolutely-positioned element parked above the viewport at `translateY(calc(-100% - 1.5rem))`, sliding to `translateY(0)` on `:focus` over `--dur-fast`. On the ground it is a green `{colors.accent}` block with white text, square, `0.75rem 1.15rem` padding, pinned 0.75rem from the top-left, carrying the standard accent focus ring. Measured on focus: 133×45px, top 12px. Under `prefers-reduced-motion: reduce` the transition is dropped and it simply appears. Do not revert this to the utility pair.
 
 ### Inputs / Fields
 
@@ -275,9 +381,10 @@ A bordered white panel with no radius, containing a definition list rendered as 
 
 ### Navigation
 
-- **Desktop:** Sticky masthead, wordmark at 1.15rem bold `wdth` 104 with an 0.15em-tracked Label beside it. Nav links at 0.875rem, muted ink at rest going to full ink on hover, semibold ink when active. Under each link sits a 1px green bar that scales from `scaleX(0)` on the left origin — permanently at `scaleX(1)` for the current page, drawn in on hover for the others, over 300ms on the house ease.
+- **Desktop:** Sticky masthead, the shared `.wordmark` beside an 0.15em-tracked Label. Nav links at 0.875rem, muted ink at rest going to full ink on hover, semibold ink when active. Under each link sits a 1px green bar that scales from `scaleX(0)` on the left origin — permanently at `scaleX(1)` for the current page, drawn in on hover for the others, over 300ms on the house ease.
 - **Mobile:** A three-line button morphs into an X (the top and bottom bars rotate ±45° to meet at center while the middle bar fades). The sheet is a fixed full-screen paper panel that slides down from `translateY(-101%)`, with links at 1.875rem `wdth` 106, hairline-separated, active link in green, closing with the full-width primary action. Body scroll locks while open, and the sheet closes on route change.
-- **Skip link:** Visually hidden until focused, then pinned top-left on a green ground.
+- **Focus containment:** While the sheet is open, every body child outside the header gets `inert` and `aria-hidden`, so the browser's own tab order is already correct without a hand-rolled focus trap. Escape closes the sheet and returns focus to the toggle; the attributes are removed on close.
+- **Skip link:** See its own entry above; it is the first element in the tab order.
 
 ### Work Grid (signature interaction)
 
@@ -293,27 +400,39 @@ The underline itself is a green pseudo-element scaling from a left origin over 4
 
 ### Editorial Prose
 
-CMS rich text is rendered through Tailwind Typography with a `.prose-niko` theme that rebinds every prose variable to system tokens: ink body and headings, green links and quote borders, hairline bullets and horizontal rules, muted captions. Prose headings pick up `wdth` 104 and -0.02em tracking so they belong to the same width family as the rest of the page, and links carry a green underline color. Prose is capped at 68ch on case studies and flat pages — wider than the 54ch `--measure-prose` used for interface copy, because long-form reading tolerates a longer line. That 68ch cap is subject to The Bounded Measure Rule like every other `ch` value: write it as `min(68ch, 100%)`.
+CMS rich text is rendered through Tailwind Typography with a `.prose-niko` theme that rebinds every prose variable to system tokens: ink body and headings, green links and quote borders, hairline bullets and horizontal rules, muted captions. Prose headings pick up `wdth` 104 and -0.02em tracking so they belong to the same width family as the rest of the page, and links carry a green underline color. Prose is capped at `min(68ch, 100%)` on case studies and flat pages — wider than the 54ch `--measure-prose` used for interface copy, because long-form reading tolerates a longer line.
 
 ### Case-Study Imagery
 
 **Character:** The same recessed frame as the work grid, at two sizes, opening into a full-bleed lightbox.
 
-Case studies carry a **featured image** and, below the body, a **static gallery**: an auto-filling grid of `minmax(min(100%, 15rem), 1fr)` columns with a 1rem gap, each tile a 16:10 hairline-bordered frame on sunk paper with `cursor: zoom-in`. The gallery repeats the work grid's recede-and-forward logic — hovering the set desaturates it (`grayscale(1) contrast(0.94)`, 68% opacity) and the hovered or focused tile returns to full color at 1.035 scale; the featured image scales 1.02 alone. Both drop the scale under `prefers-reduced-motion: reduce`. Clicking a tile opens a dark full-screen lightbox whose only chrome is a 2.75rem square close control drawn as a translucent white hairline box on transparent ground, filling to 14% white on hover — the site's hairline language carried onto a dark field.
+Case studies carry a **featured image** and, below the body, a **static gallery**: an auto-filling grid of `minmax(min(100%, 15rem), 1fr)` columns with a 1rem gap, each tile a 16:10 hairline-bordered frame on sunk paper with `cursor: zoom-in`. Both now carry the work grid's full three-path treatment rather than a hover-only one: the pointer path is gated on `@media (hover: hover) and (pointer: fine)`, and `.static-gallery:focus-within` / `.static-gallery__item:focus` (and `.featured-image:focus`) reach the same state from the keyboard and from an iOS tap. Hovering or focusing the set desaturates it (`grayscale(1) contrast(0.94)`, 68% opacity) and returns the active tile to full color at 1.035 scale; the featured image scales 1.02 alone. Both drop the scale under `prefers-reduced-motion: reduce`. Clicking a tile opens a dark full-screen lightbox whose slides are square (`border-radius: 0`, matching every other frame on the site) and whose only chrome is a 2.75rem square close control drawn as a translucent white hairline box on transparent ground, filling on hover — the site's hairline language carried onto a dark field.
+
+### Failure States
+
+**Character:** A failure is a page, not an accident. It arrives on the same paper, inside the same shell, in the same type roles.
+
+Four boundaries ship as real surfaces: `src/app/error.tsx` (a thrown render inside the app shell), `src/app/global-error.tsx` (the root boundary, which replaces `<html>` and therefore styles itself inline — the one place in the system that may, because it cannot assume the stylesheet loaded), `src/app/not-found.tsx`, and `src/app/(common-layout)/not-found.tsx`. The route group needs its own: `notFound()` inside the group does not resolve to the root boundary, and Next's default injects a style block that overrides the site background with white. Each boundary is a Statement, a bounded prose line, and a quiet action back into the site — no illustration, no error color, no icon.
+
+### Data Resilience
+
+Presentation degrades one field at a time rather than all at once. Every Contentful read is wrapped and returns an empty result instead of throwing, so a section with no data renders as an absent section rather than a broken route. The homepage headline and intro fall back **per field** to `HOME_CONTENT_FALLBACK`, so a half-filled entry loses one line, not the page. Rich-text asset accessors are fully guarded, so a missing or unlinked image collapses to its sunk-paper frame — the same recess the design already uses for an unloaded screenshot. Verified against a live server with broken credentials: no route returns a 500.
 
 ### Motion
 
-Two tokens govern everything: `--ease-out: cubic-bezier(0.16, 1, 0.3, 1)` (exponential, fast-out then long settle) and a pair of durations, `--dur: 420ms` for authored gestures and `--dur-fast: 180ms` for state answers like a button darkening.
+Two tokens govern everything: `--ease-out: cubic-bezier(0.16, 1, 0.3, 1)` (exponential, fast-out then long settle) and a pair of durations, `--dur: 420ms` for authored gestures and `--dur-fast: 180ms` for state answers like a button darkening or the skip link arriving.
 
 The entrance is one staggered pass: `.settle` translates elements up from `0.55rem` over 640ms with a `--i * 70ms` delay, applied to the home statement, its paragraph, and the facts panel. **It animates `transform` only — never opacity.** Starting from an already-legible default means no element is ever held invisible waiting on its stagger delay, which keeps the first paint honest and survives a stalled animation. The whole block is inside `@media (prefers-reduced-motion: no-preference)`.
 
 ### Named Rules
 
-**The One Authored Moment Rule.** The work grid is the site's single orchestrated interaction. New components get state changes that answer the user (a color, a rule, an outline) — not their own choreography. Scattered micro-animations spend the budget this moment needs.
+**The One Authored Moment Rule.** The work grid is the site's single orchestrated interaction. New components get state changes that answer the user (a color, a rule, an outline) — not their own choreography. Scattered micro-animations spend the budget this moment needs. The case-study gallery is not a second moment; it is the same moment reused on the same material.
 
-**The Never Invisible Rule.** Entrance animation moves things; it does not fade them in. No `opacity: 0` starting state, ever. If an animation fails or a delay stalls, the content is already readable.
+**The Never Invisible Rule.** Entrance animation moves things; it does not fade them in. No `opacity: 0` starting state, ever. If an animation fails or a delay stalls, the content is already readable. The one element that is genuinely hidden — the skip link — is moved out of the viewport by transform and comes back on focus, so it is never clipped away from the accessibility tree.
 
 **The Three-Path Rule.** Any interaction built on hover must ship its keyboard path and its touch path in the same change. Pointer behavior is gated behind `(hover: hover) and (pointer: fine)` so it never strands a touch device.
+
+**The Designed Failure Rule.** Every route segment that can fail owns a boundary in the house language, and every data read returns a degraded value rather than throwing. A blank white page with a system font is a design defect, not an edge case.
 
 ## Do's and Don'ts
 
@@ -321,25 +440,31 @@ The entrance is one staggered pass: `.settle` translates elements up from `0.55r
 - **Do** divide with a 1px `{colors.rule}` hairline, and reach for the 1.5px `{colors.rule-strong}` only above a major content region.
 - **Do** put every band's content inside `.shell` and let the band itself own the background and the rule.
 - **Do** get hierarchy from the width axis — a new type role is a new `font-stretch` and weight on Archivo, never a new family.
+- **Do** name a type role at the call site and let `globals.css` own the size; extend the ramp with a `clamp()` modifier when a surface needs a new one.
 - **Do** wrap every `ch` measure in `min(…, 100%)`, including inline heading caps.
 - **Do** use `{colors.accent}` for every action, link, active state and focus ring, and let its consistency be the signal.
 - **Do** keep `{colors.ink-faint}` at its exact value; it is calibrated to clear WCAG AA at the 11–12px label sizes it carries.
 - **Do** pair any raised or sunk tone with a hairline — tone alone never defines an edge.
+- **Do** give non-button text links `.link-target` so they clear 24×24 on touch, taking the height from padding rather than from type.
 - **Do** ship the keyboard and touch paths alongside any hover behavior, and use `:focus` rather than `:focus-visible` where an iOS tap must satisfy the rule.
 - **Do** animate `transform` for entrance and leave content visible from first paint.
 - **Do** honor `prefers-reduced-motion` by dropping the movement while keeping the state change that carries the meaning.
+- **Do** give every route segment that can fail its own boundary, and make every data read degrade per field instead of throwing.
 - **Do** let project imagery be the only chromatic event on the page.
 
 ### Don't:
-- **Don't** add a `box-shadow`, `drop-shadow`, glow or inset highlight to any content surface. There is none in the system and its absence is structural.
+- **Don't** add a `box-shadow`, `drop-shadow`, glow or inset highlight to any content surface. There is none in `src/` and its absence is structural.
 - **Don't** introduce a card, a filled panel, or a rounded container to group content. Rules and spacing do that job.
-- **Don't** round content corners. Radius exists only on the focus ring (1px) and the scrollbar thumb (99px).
+- **Don't** round content corners, including a lightbox slide or an overlay control. Radius exists only on the focus ring (1px) and the scrollbar thumb (99px).
+- **Don't** declare a `font-size` or `font-stretch` in a page or component; only `globals.css` sets type, and only the root error boundary and the lightbox close control are exempt.
+- **Don't** express a responsive type change as a breakpoint step. The ramp is fluid.
 - **Don't** add a second typeface, including for code, quotes or numerals.
 - **Don't** add a second accent hue, a gradient, or a colored section background. `{colors.signal-error}` on form validation text is the system's only chromatic exception.
 - **Don't** put an error state on a border, icon or background tint — the message text alone carries it.
 - **Don't** uppercase anything outside the Label role, and never uppercase a button or a heading.
 - **Don't** lighten `{colors.ink-faint}`, or set text smaller than 11px on it.
 - **Don't** write a bare `ch` max-width; it will overflow a narrow viewport.
+- **Don't** rebuild the skip link from `sr-only` + `focus:not-sr-only`; that pair does not reveal on focus.
 - **Don't** start an entrance animation from `opacity: 0`.
 - **Don't** gate an interaction on hover alone, and don't let a scroll-driven animation ship without an `@supports` guard.
 - **Don't** scatter micro-interactions across new components; the work grid is where that budget was spent.
