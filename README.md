@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# byNiko
 
-## Getting Started
+Websites and brands for galleries, nonprofits and small businesses.
+Next.js 15 (App Router) · React 19 · Tailwind CSS v4 · Contentful · Formspree.
 
-First, run the development server:
+- `PRODUCT.md` — who the site is for and what it must not claim
+- `DESIGN.md` — the visual system, its tokens, and the rules worth not undoing
+
+## Running it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Environment
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+`.env*` is gitignored, so these live in `.env.local` locally and in the host's
+environment in production.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable | Required | What it does |
+| --- | --- | --- |
+| `CONTENTFUL_SPACE_ID` | yes | Contentful space. Without it, content renders empty rather than erroring. |
+| `CONTENTFUL_ACCESS_TOKEN` | yes | Contentful Content Delivery API token (read-only). |
+| `NEXT_PUBLIC_FORMSPREE_FORM` | yes | Formspree form id for `/contact`. Unset shows an honest "not connected" state instead of failing on send. |
+| `NEXT_PUBLIC_FORMSPREE_DISCOVERY` | yes | Formspree form id for `/client-discovery`. Same fallback. |
+| `REVALIDATE_SECRET` | yes | Shared secret for the Contentful revalidation webhook. Unset means the webhook rejects everything. |
 
-## Learn More
+## Content
 
-To learn more about Next.js, take a look at the following resources:
+Contentful drives the site. Content types:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Type | Purpose |
+| --- | --- |
+| `homePage` | Homepage headline and intro. Each field falls back independently, so a half-filled entry degrades one line at a time. |
+| `workIndex` | Drag-sortable ordering for the work grid. Projects missing from the list are appended, never hidden. |
+| `portfolioPage` | A project: title, slug, body, main image, gallery, services, live URL. |
+| `page` | Flat pages — currently About and Services. |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Publishing
 
-## Deploy on Vercel
+Pages are prerendered at build time and revalidate every 5 minutes. To make
+publishing immediate, point a Contentful webhook at the revalidation route:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **URL** — `POST https://byniko.com/api/revalidate`
+- **Triggers** — Entry: publish, unpublish, delete
+- **Header** — `x-revalidate-secret: <REVALIDATE_SECRET>`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The secret travels in a header rather than a query string, so it stays out of
+access logs. The route revalidates only the paths a given entry affects, and
+falls back to revalidating everything when it cannot tell.
+
+## How it behaves when things break
+
+This is deliberate and worth preserving:
+
+- **The CMS is unreachable.** No route 500s. The homepage keeps its fallback
+  copy, the work grid explains itself, and contact still works. Prerendered
+  pages are unaffected — they are already-built HTML, and a failed
+  revalidation keeps serving the last good version.
+- **A page genuinely does not exist** → 404.
+- **A page cannot be fetched** → 5xx, not 404, so crawlers retry instead of
+  treating the project as permanently gone. List routes never do this; a
+  degraded grid beats an error page.
+- **A form is misconfigured** → it says so, rather than silently failing on
+  submit.
+- **An asset is unpublished** → that block is skipped, not a crashed page.
+
+## Accessibility
+
+WCAG 2.1 AA is a product requirement, not a nice-to-have — the site publicly
+claims to meet every web standard. Current state, measured with axe-core
+across every route at desktop and mobile: zero violations, zero contrast
+failures, zero touch targets under 24×24.
+
+Two things in `DESIGN.md` are easy to break by accident:
+
+- The skip link is a real component. Tailwind's `sr-only` +
+  `focus:not-sr-only` pair does **not** reveal on focus — `sr-only` wins on
+  source order at equal specificity.
+- `.link-target` gives text links their tap height from padding. Removing it
+  fails WCAG 2.2 SC 2.5.8.

@@ -3,12 +3,32 @@ import { notFound } from 'next/navigation';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { Document } from '@contentful/rich-text-types';
 
-import { getPortfolioItem } from '@/lib/contentful';
+import { getAllPortfolioItems, getPortfolioItem } from '@/lib/contentful';
 import { renderOptions } from '@/components/rich-text/renderOptions';
 import { PortfolioPageFields } from '@/../declarations';
 import GalleryStatic from '@/components/GalleryStatic/GalleryStatic';
 import { ModalContextProvider } from '@/components/ModalContext/ModalContext';
 import FeaturedImage from '@/components/FeaturedImage/FeaturedImage';
+
+/**
+ * Case studies are built as static pages, so a CMS outage cannot reach them:
+ * the HTML already exists, and a failed revalidation keeps serving the last
+ * good version. `dynamicParams` leaves newly published slugs working before
+ * the next deploy.
+ */
+export async function generateStaticParams() {
+  const projects = await getAllPortfolioItems();
+
+  // `slug` widens to a localised record through the entry skeleton, so it is
+  // read as unknown and narrowed here rather than trusted from the type.
+  return projects
+    .map((project) => (project.fields as { slug?: unknown })?.slug)
+    .filter((slug): slug is string => typeof slug === 'string' && slug !== '')
+    .map((slug) => ({ slug }));
+}
+
+export const dynamicParams = true;
+export const revalidate = 300;
 
 export async function generateMetadata({
   params,

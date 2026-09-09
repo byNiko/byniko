@@ -1,4 +1,4 @@
-import { getPostBySlug } from '@/lib/contentful';
+import { getAllPageSlugs, getPostBySlug } from '@/lib/contentful';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Document } from '@contentful/rich-text-types';
@@ -6,6 +6,15 @@ import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 import { renderOptions } from '@/components/rich-text/renderOptions';
 import { PageFields } from '@/../declarations';
 import FactsPanel from '@/components/FactsPanel/FactsPanel';
+
+/** About, Services, and any future flat CMS page, built as static HTML. */
+export async function generateStaticParams() {
+  const slugs = await getAllPageSlugs();
+  return slugs.map((slug) => ({ slug }));
+}
+
+export const dynamicParams = true;
+export const revalidate = 300;
 
 export async function generateMetadata({
   params,
