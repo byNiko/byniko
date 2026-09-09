@@ -8,6 +8,9 @@ export const metadata: Metadata = {
     'Selected projects — websites, brands and custom applications built for galleries, nonprofits and small businesses.',
 };
 
+// Reordering in Contentful reaches the site without a redeploy.
+export const revalidate = 300;
+
 export default async function Work() {
   const projects = await getAllPortfolioItems();
 

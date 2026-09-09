@@ -1,10 +1,16 @@
 import Link from 'next/link';
-import { getAllPortfolioItems } from '@/lib/contentful';
+import { getAllPortfolioItems, getHomeContent } from '@/lib/contentful';
 import WorkGrid from '@/components/WorkGrid/WorkGrid';
 import FactsPanel from '@/components/FactsPanel/FactsPanel';
 
+// Reordering in Contentful reaches the site without a redeploy.
+export const revalidate = 300;
+
 export default async function Home() {
-  const projects = await getAllPortfolioItems();
+  const [projects, { headline, intro }] = await Promise.all([
+    getAllPortfolioItems(),
+    getHomeContent(),
+  ]);
   const featured = projects.slice(0, 6);
 
   return (
@@ -17,16 +23,13 @@ export default async function Home() {
               className="settle t-statement text-[2.5rem] sm:text-[3.25rem] lg:text-[3.75rem]"
               style={{ maxWidth: 'var(--measure-statement)', ['--i' as string]: 0 }}
             >
-              Websites and brands for galleries, nonprofits and small businesses.
+              {headline}
             </h1>
             <p
-              className="settle t-prose mt-7 text-[1.0625rem] text-ink-muted"
+              className="settle t-prose mt-7 whitespace-pre-line text-[1.0625rem] text-ink-muted"
               style={{ ['--i' as string]: 1 }}
             >
-              I&rsquo;m Niko. Since 2010 I&rsquo;ve done the whole job myself
-              &mdash; brand, design, front-end, and the custom applications
-              off-the-shelf tools won&rsquo;t cover. No hand-offs, no account
-              manager, no sub-contractors. Everything below, I built.
+              {intro}
             </p>
           </div>
 
