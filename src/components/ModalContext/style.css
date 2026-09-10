@@ -72,17 +72,39 @@
   }
 }
 
-/* square, like every other image frame on the site.
-   max-height rather than height: a fixed height plus the global
-   img { max-width: 100% } clamps width without touching height, which
-   squashed every image 2.2x horizontally at phone widths. */
+/* The slide is a fixed box and the image is fitted inside it, because
+   `max-width`/`max-height` only ever shrink: with `width: auto; height: auto`
+   the image rendered at its layout size — 475x320 in a 1440x900 viewport, 36%
+   of the screen — and the 80vh cap never engaged.
+
+   `object-fit: contain` against an explicit box is what makes this safe. An
+   earlier attempt used a fixed height with `width: auto`, which let the global
+   `img { max-width: 100% }` clamp the width while the height stayed put and
+   squashed every image 2.2x on a phone. Fixing both axes and letting `contain`
+   letterbox cannot distort. Verified 0.99-1.00 at 390, 768, 1440 and 1920.
+
+   The inline padding keeps the image clear of Swiper's arrows, which sit in
+   the slide's own corners; it relaxes on phones where the arrows would
+   otherwise eat 40% of the width. */
+.fullscreen-modal .swiper-slide > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 84vh;
+  padding-inline: 1rem;
+}
+
+@media (min-width: 48rem) {
+  .fullscreen-modal .swiper-slide > div {
+    padding-inline: 4.5rem;
+  }
+}
+
 .fullscreen-modal .swiper-slide > div img {
-  width: auto;
-  max-width: 100%;
-  height: auto;
-  max-height: 80vh;
+  display: block;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
-  margin: auto;
   border-radius: 0;
 }
 
