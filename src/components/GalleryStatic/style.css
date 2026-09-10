@@ -25,12 +25,17 @@
 
 /* same three-path treatment as the work grid: pointer, keyboard, and a static
    fallback on touch — see DESIGN.md, The Three-Path Rule */
+/* Both halves of the pair are scoped to `.static-gallery` so they carry equal
+   specificity and source order decides the winner. Without the outer class on
+   the second rule the recede selector is (0,3,1) against (0,2,1) and wins,
+   which greys the whole gallery and never restores the item under the
+   pointer. */
 @media (hover: hover) and (pointer: fine) {
   .static-gallery:hover .static-gallery__item img {
     filter: grayscale(1) contrast(0.94);
     opacity: 0.68;
   }
-  .static-gallery__item:hover img {
+  .static-gallery .static-gallery__item:hover img {
     filter: none;
     opacity: 1;
     transform: scale(1.035);
@@ -41,7 +46,7 @@
   filter: grayscale(1) contrast(0.94);
   opacity: 0.68;
 }
-.static-gallery__item:focus img {
+.static-gallery .static-gallery__item:focus img {
   filter: none;
   opacity: 1;
   transform: scale(1.035);
@@ -76,8 +81,12 @@
   .featured-image img {
     transition-duration: 1ms;
   }
-  .static-gallery__item:hover img,
-  .featured-image:hover img {
+  /* matches the specificity of the restore rules above, so it can actually
+     override their scale */
+  .static-gallery .static-gallery__item:hover img,
+  .static-gallery .static-gallery__item:focus img,
+  .featured-image:hover img,
+  .featured-image:focus img {
     transform: none;
   }
 }

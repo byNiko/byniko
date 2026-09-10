@@ -472,8 +472,10 @@ img {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* :focus, not :focus-visible — it must match the state the rule above
+     actually uses, or the scale survives for keyboard users */
   .work-cell:hover .work-frame img,
-  .work-cell:focus-visible .work-frame img {
+  .work-cell:focus .work-frame img {
     transform: none;
   }
   .work-frame img,
