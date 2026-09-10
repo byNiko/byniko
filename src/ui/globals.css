@@ -29,6 +29,11 @@
      named decision: an error has to read as an error. 5.9:1 on paper. */
   --signal-error: #a3261b;
 
+  /* Lightbox scrim: the ink's own channels at a fixed alpha. Written as a
+     literal rgb() rather than color-mix(--ink, transparent), which does not
+     composite to its computed alpha reliably. */
+  --scrim: rgb(20 22 26 / 0.94);
+
   /* ch-based measures must never win against a narrow viewport */
   --measure-prose: min(54ch, 100%);
   --measure-statement: min(20ch, 100%);

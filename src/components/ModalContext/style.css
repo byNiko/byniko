@@ -1,12 +1,83 @@
-/* Lightbox slides sit square, like every other image frame on the site —
-   see DESIGN.md, the square-corner rule. */
-.fullscreen-modal .swiper-slide {
-  & > div {
-    img {
-      width: auto;
-      height: 80vh;
-      margin: auto;
-      border-radius: 0;
-    }
+/* The image lightbox. These rules live here because ModalContext is what
+   renders `.fullscreen-modal`; they were previously split across two other
+   stylesheets, which is how they came to be dropped. */
+
+.fullscreen-modal {
+  --swiper-navigation-color: var(--paper-raised);
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* the ink, not a generic black, so the scrim belongs to the palette */
+  background: var(--scrim);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--dur) var(--ease-out),
+    visibility var(--dur) var(--ease-out);
+}
+
+.fullscreen-modal.isActive {
+  opacity: 1;
+  visibility: visible;
+}
+
+.swiper-container-fullscreen {
+  position: relative;
+  width: 90%;
+  height: 90%;
+}
+
+.fullscreen-swiper-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+}
+
+.fullscreen-swiper-slide img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* square, like every other image frame on the site */
+.fullscreen-modal .swiper-slide > div img {
+  width: auto;
+  height: 80vh;
+  margin: auto;
+  border-radius: 0;
+}
+
+/* Swiper's arrows are its own glyphs; give them a legible ground rather than
+   the drop-shadow the old stylesheet used, which the no-shadow rule bans. */
+.fullscreen-modal .swiper-button-next,
+.fullscreen-modal .swiper-button-prev {
+  width: 3rem;
+  height: 3rem;
+  color: var(--paper-raised);
+  background: rgb(20 22 26 / 0.55);
+  border: 1px solid rgb(247 247 245 / 0.4);
+  transition: background var(--dur-fast) var(--ease-out);
+}
+.fullscreen-modal .swiper-button-next:hover,
+.fullscreen-modal .swiper-button-prev:hover {
+  background: rgb(20 22 26 / 0.85);
+}
+.fullscreen-modal .swiper-button-next::after,
+.fullscreen-modal .swiper-button-prev::after {
+  font-size: 1.125rem;
+}
+
+.fullscreen-modal :focus-visible {
+  outline: 2px solid var(--paper-raised);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fullscreen-modal {
+    transition-duration: 1ms;
   }
 }
