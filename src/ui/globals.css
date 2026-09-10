@@ -554,6 +554,12 @@ img {
 
 .case-split {
   display: grid;
+  /* minmax(0, …) rather than the default `auto`: a grid item's `min-width` is
+     `auto`, so it cannot shrink below its content's min-content size. Swiper
+     writes pixel widths onto its slides at init, which becomes a min-content
+     floor and pinned the stacked column open at 36rem inside a 350px track —
+     576px of content in a 390px viewport, scrolling the page sideways. */
+  grid-template-columns: minmax(0, 1fr);
   gap: 2.5rem 0;
   margin-top: 2.5rem;
 }
@@ -568,8 +574,30 @@ img {
    collapsed a project with no facts rows to a 140px thumbnail. */
 .case-art {
   width: 100%;
+  min-width: 0;
   max-width: 36rem;
   margin-inline: auto;
+}
+
+/* Tablets have width the phone layout throws away. Between 48rem and the full
+   split, the artifact and its caption sit side by side inside the stacked
+   block rather than each taking a full-width turn: measured at 768 that moved
+   the story from y=952 to the top of the first screen. */
+@media (min-width: 48rem) and (max-width: 71.9375rem) {
+  .case-art {
+    /* 48rem, not `none`: unbounded the artifact column reached 656px at 1024 —
+       wider than the 448px stage the full split settles on, which is the
+       oversized-hero fault returning one breakpoint down. */
+    max-width: 48rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 16rem;
+    align-items: start;
+    gap: 0 2rem;
+  }
+  .case-art .case-facts {
+    margin-top: 0;
+    border-top: 0;
+  }
 }
 
 /* Promoted late, at 72rem, so the reading column keeps its full measure rather

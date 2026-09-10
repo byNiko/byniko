@@ -1,0 +1,90 @@
+/* The stage and its strip. The frame itself is `.hero-frame` from globals.css,
+   so the artifact keeps the one 16:10 crop the whole site uses. */
+
+.artifact-stage {
+  width: 100%;
+}
+
+/* Swiper sets slides to `height: auto`; the frame supplies the ratio. */
+.artifact-stage .swiper-slide {
+  height: auto;
+}
+
+.artifact-strip {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.artifact-thumb {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  background: var(--paper-sunk);
+  cursor: pointer;
+}
+
+.artifact-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  /* the work grid's gesture at strip scale: the set recedes, the live one
+     comes forward — the same recede/restore, not a second idea */
+  filter: grayscale(1) contrast(0.94);
+  opacity: 0.55;
+  transition:
+    filter var(--dur) var(--ease-out),
+    opacity var(--dur) var(--ease-out);
+}
+
+/* Swiper's own active-thumb class, so the state has one source of truth. */
+.artifact-strip .swiper-slide-thumb-active .artifact-thumb {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+.artifact-strip .swiper-slide-thumb-active .artifact-thumb img {
+  filter: none;
+  opacity: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .artifact-strip .swiper-slide:hover .artifact-thumb img {
+    filter: none;
+    opacity: 1;
+  }
+}
+
+/* Swiper puts a tabindex on the slide, so the ring belongs on the slide box. */
+.artifact-strip .swiper-slide:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.artifact-foot {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.6rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .artifact-thumb img {
+    transition-duration: 1ms;
+  }
+  /* Swiper animates slide translation inline; this is the documented opt-out */
+  .artifact-stage .swiper-wrapper,
+  .artifact-strip .swiper-wrapper {
+    transition-duration: 1ms !important;
+  }
+}
+
+/* grid/flex children need this to be allowed to shrink; Swiper writes pixel
+   widths that would otherwise act as a min-content floor */
+.artifact,
+.artifact-stage,
+.artifact-strip {
+  min-width: 0;
+}
