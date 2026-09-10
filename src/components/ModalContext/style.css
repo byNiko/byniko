@@ -72,10 +72,16 @@
   }
 }
 
-/* square, like every other image frame on the site */
+/* square, like every other image frame on the site.
+   max-height rather than height: a fixed height plus the global
+   img { max-width: 100% } clamps width without touching height, which
+   squashed every image 2.2x horizontally at phone widths. */
 .fullscreen-modal .swiper-slide > div img {
   width: auto;
-  height: 80vh;
+  max-width: 100%;
+  height: auto;
+  max-height: 80vh;
+  object-fit: contain;
   margin: auto;
   border-radius: 0;
 }

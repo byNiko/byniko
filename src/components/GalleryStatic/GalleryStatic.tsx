@@ -23,7 +23,11 @@ export default function GalleryStatic( { slides }: { slides: Asset[] } ) {
               openModal(index, slides);
             }}
           >
-            <ContentfulImage asset={image} />
+            <ContentfulImage
+              asset={image}
+              alt={`Image ${index + 1} of ${slides.length}`}
+              sizes="(max-width: 40rem) 100vw, (max-width: 64rem) 50vw, 33vw"
+            />
           </button>
         ))}
       </div>
