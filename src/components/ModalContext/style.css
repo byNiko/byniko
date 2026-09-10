@@ -109,10 +109,11 @@
 }
 
 /* The close control, in the site's own language: a hairline box on a dark
-   field. It lives here, with the component that renders it — it previously sat
-   in GalleryStatic/style.css and stopped loading entirely the moment a route
-   stopped rendering that component, shipping a 20px unstyled glyph pinned to
-   the wrong edge of the overlay. */
+   field. It lives here, with the component that renders it. It used to live in
+   a sibling component's stylesheet, and stopped loading entirely the moment no
+   route rendered that sibling — shipping a 20px unstyled glyph pinned to the
+   wrong edge of the overlay, twice. A component's styles belong to whatever
+   renders the element; see The Stylesheet Ownership Rule in DESIGN.md. */
 .close-modal {
   position: absolute;
   top: 1rem;
