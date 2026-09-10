@@ -7,9 +7,9 @@ import type { Asset } from 'contentful';
 import { getAllPortfolioItems, getPortfolioItem } from '@/lib/contentful';
 import { renderOptions } from '@/components/rich-text/renderOptions';
 import { PortfolioPageFields } from '@/../declarations';
-import GalleryStatic from '@/components/GalleryStatic/GalleryStatic';
 import { ModalContextProvider } from '@/components/ModalContext/ModalContext';
 import FeaturedImage from '@/components/FeaturedImage/FeaturedImage';
+import CaseFacts from '@/components/CaseFacts/CaseFacts';
 
 /**
  * Case studies are built as static pages, so a CMS outage cannot reach them:
@@ -104,7 +104,7 @@ export default async function PortfolioPage({
         </Link>
       </nav>
 
-      <header className="rule-bottom pb-8">
+      <header className="rule-bottom pb-7">
         <h1
           className="t-statement t-statement--feature"
           style={{ maxWidth: 'min(15ch, 100%)' }}
@@ -113,58 +113,44 @@ export default async function PortfolioPage({
         </h1>
       </header>
 
-      {/* One hairline row, not a panel: the sidebar this replaces was empty on
-          seven of nine projects. Rendered only when it carries something, so
-          the empty state is an absent row rather than a bare double hairline. */}
-      {(servicesList?.length || publicUrl) && (
-        <div className="meta-row">
-          {servicesList?.length ? (
-            <p className="t-label text-ink-muted">
-              <span className="sr-only">What I did: </span>
-              {servicesList.join(' · ')}
-            </p>
-          ) : (
-            <span />
-          )}
-          {publicUrl && (
-            <a
-              href={publicUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="action-quiet shrink-0"
-            >
-              Visit the live site <span aria-hidden>↗</span>
-            </a>
-          )}
-        </div>
-      )}
+      {/* The artifact and its caption ride in a column beside the story and
+          stay in view while it is read; the story itself comes from one
+          free-form field and is never inspected. Without a mainImage there is
+          no column to hold, so the split is not opened at all — an empty grid
+          track is exactly the dead gutter this layout exists to remove. */}
+      <div className={mainImage ? 'case-split' : 'mt-10'}>
+        {mainImage && (
+          <aside className="case-art">
+            <FeaturedImage
+              mainImage={mainImage}
+              title={title}
+              slides={slides}
+            />
+            <CaseFacts
+              services={servicesList}
+              publicUrl={publicUrl}
+              slides={slides}
+            />
+          </aside>
+        )}
 
-      {mainImage && (
-        <div className="mt-10">
-          <FeaturedImage mainImage={mainImage} title={title} slides={slides} />
-        </div>
-      )}
-
-      {parsedBody ? (
-        <div className="prose prose-niko prose-lg mx-auto mt-12 max-w-[var(--measure-longform)]">
-          {parsedBody}
-        </div>
-      ) : (
-        <p className="t-prose mx-auto mt-12 text-ink-muted">
-          The write-up for this project isn&rsquo;t published yet. What I did is
-          listed above — ask me about it and I&rsquo;ll walk you through the
-          work.
-        </p>
-      )}
-
-      {extras.length > 0 && (
-        <section className="mt-16">
-          <h2 className="t-label rule-strong-bottom mb-6 pb-3 text-ink-muted">
-            More from this project
-          </h2>
-          <GalleryStatic slides={extras} />
-        </section>
-      )}
+        {parsedBody ? (
+          <div
+            className={`case-body prose prose-niko prose-lg${mainImage ? '' : ' mx-auto'}`}
+          >
+            {parsedBody}
+          </div>
+        ) : (
+          <p
+            className={`t-prose text-ink-muted${mainImage ? '' : ' mx-auto'}`}
+          >
+            The write-up for this project isn&rsquo;t published yet.
+            {servicesList?.length
+              ? ' What I did is listed with it — ask me about it and I’ll walk you through the work.'
+              : ' Ask me about it and I’ll walk you through the work.'}
+          </p>
+        )}
+      </div>
 
       <div className="close-band mt-16">
         <div>

@@ -24,8 +24,9 @@ export default function FeaturedImage({ mainImage, title, slides }: Props) {
         priority
         asset={mainImage}
         alt={title}
-        /* the frame is the full shell width, not the 33vw the default assumed */
-        sizes="(max-width: 48rem) 100vw, 90vw"
+        /* full width until the artifact column is promoted at 72rem, then the
+           column's own width — roughly 30rem, never the whole shell */
+        sizes="(max-width: 72rem) 100vw, 30rem"
       />
     </button>
   );
