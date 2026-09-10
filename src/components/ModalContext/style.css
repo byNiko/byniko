@@ -12,16 +12,64 @@
   justify-content: center;
   /* the ink, not a generic black, so the scrim belongs to the palette */
   background: var(--scrim);
+
+  /* The work grid's gesture at full scale: everything recedes, one artifact
+     comes forward. Declarations on the base rule are the *exit* — a closing
+     overlay should get out of the way faster than it arrived. */
   opacity: 0;
-  visibility: hidden;
-  transition:
-    opacity var(--dur) var(--ease-out),
-    visibility var(--dur) var(--ease-out);
+  transition: opacity 200ms var(--ease-out);
 }
 
 .fullscreen-modal.isActive {
   opacity: 1;
-  visibility: visible;
+  transition: opacity 300ms var(--ease-out);
+}
+
+/* the artifact itself, arriving a beat behind the scrim */
+.fullscreen-modal .swiper {
+  opacity: 0;
+  transform: scale(0.97);
+  transition:
+    opacity 160ms var(--ease-out),
+    transform 200ms var(--ease-out);
+}
+
+.fullscreen-modal.isActive .swiper {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 260ms var(--ease-out) 60ms,
+    transform 420ms var(--ease-out) 60ms;
+}
+
+/* controls settle last, so nothing competes with the image landing */
+.fullscreen-modal .close-modal,
+.fullscreen-modal .swiper-button-next,
+.fullscreen-modal .swiper-button-prev {
+  opacity: 0;
+  transition: opacity 140ms var(--ease-out);
+}
+
+.fullscreen-modal.isActive .close-modal,
+.fullscreen-modal.isActive .swiper-button-next,
+.fullscreen-modal.isActive .swiper-button-prev {
+  opacity: 1;
+  transition: opacity 240ms var(--ease-out) 140ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* keep the fade — it is what makes the state change legible — and drop
+     the spatial movement and the stagger */
+  .fullscreen-modal .swiper,
+  .fullscreen-modal.isActive .swiper {
+    transform: none;
+    transition: opacity 160ms linear;
+  }
+  .fullscreen-modal.isActive .close-modal,
+  .fullscreen-modal.isActive .swiper-button-next,
+  .fullscreen-modal.isActive .swiper-button-prev {
+    transition-delay: 0ms;
+  }
 }
 
 .swiper-container-fullscreen {
