@@ -30,13 +30,13 @@
   height: 100%;
   object-fit: cover;
   object-position: top center;
-  /* the work grid's gesture at strip scale: the set recedes, the live one
-     comes forward — the same recede/restore, not a second idea */
-  filter: grayscale(1) contrast(0.94);
+  /* Muted, not desaturated. The strip is an index, and an index should still
+     read as pictures — stripping the colour made it hard to tell one frame
+     from another, which is the one job it has. Full desaturation stays with
+     the work grid, where it is the site's single authored moment; spending it
+     here would have made that gesture ordinary. */
   opacity: 0.55;
-  transition:
-    filter var(--dur) var(--ease-out),
-    opacity var(--dur) var(--ease-out);
+  transition: opacity var(--dur) var(--ease-out);
 }
 
 /* Swiper's own active-thumb class, so the state has one source of truth. */
@@ -45,14 +45,12 @@
   outline-offset: -1px;
 }
 .artifact-strip .swiper-slide-thumb-active .artifact-thumb img {
-  filter: none;
   opacity: 1;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .artifact-strip .swiper-slide:hover .artifact-thumb img {
-    filter: none;
-    opacity: 1;
+    opacity: 0.85;
   }
 }
 

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import type SwiperCore from 'swiper';
-import { Thumbs, FreeMode, Keyboard, A11y } from 'swiper/modules';
+import { Thumbs, Keyboard, A11y } from 'swiper/modules';
 import { Asset } from 'contentful';
 
 import ContentfulImage from '../ContentfulImage';
@@ -11,7 +11,6 @@ import { useModalContext } from '../ModalContext/ModalContext';
 
 import 'swiper/css';
 import 'swiper/css/thumbs';
-import 'swiper/css/free-mode';
 import './style.css';
 
 type Props = {
@@ -46,7 +45,10 @@ export default function CaseArtifact({ title, slides }: Props) {
       <Swiper
         className="artifact-stage"
         modules={single ? [A11y] : [Thumbs, Keyboard, A11y]}
-        thumbs={single ? undefined : { swiper: thumbs }}
+        /* autoScrollOffset advances the strip one frame before the active
+           thumb reaches the edge, so the next image is already visible rather
+           than appearing only once you have passed it. */
+        thumbs={single ? undefined : { swiper: thumbs, autoScrollOffset: 1 }}
         keyboard={single ? false : { enabled: true }}
         allowTouchMove={!single}
         spaceBetween={12}
@@ -89,11 +91,22 @@ export default function CaseArtifact({ title, slides }: Props) {
         <>
           <Swiper
             className="artifact-strip"
-            modules={[FreeMode, Thumbs, A11y]}
+            modules={[Thumbs, A11y]}
             onSwiper={setThumbs}
             spaceBetween={8}
-            slidesPerView={4}
-            freeMode
+            /* The fractional value is the affordance: a sliver of the next
+               thumbnail is always visible, which is what tells you the strip
+               continues. A whole number ends flush at the edge and reads as
+               the end of the set. */
+            slidesPerView={4.3}
+            /* No `centeredSlides`. Centring the active thumb sounds right and
+               measures wrong here: `centeredSlidesBounds` does not clamp against
+               a fractional slidesPerView, so the strip sat centred on thumbs 1-3
+               even at rest and clipped the first thumbnail to 62%. The strip
+               following the selection is what was actually wanted, and
+               `autoScrollOffset` on the stage does that without moving the set
+               when it does not need to move. */
+            slideToClickedSlide
             watchSlidesProgress
             a11y={{ containerMessage: 'Choose an image' }}
           >
