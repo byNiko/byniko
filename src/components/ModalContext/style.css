@@ -72,25 +72,6 @@
   }
 }
 
-.swiper-container-fullscreen {
-  position: relative;
-  width: 90%;
-  height: 90%;
-}
-
-.fullscreen-swiper-slide {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  align-self: center;
-}
-
-.fullscreen-swiper-slide img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-
 /* square, like every other image frame on the site */
 .fullscreen-modal .swiper-slide > div img {
   width: auto;
