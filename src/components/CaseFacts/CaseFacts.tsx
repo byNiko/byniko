@@ -39,14 +39,14 @@ export default function CaseFacts({ services, publicUrl, slides }: Props) {
     <dl className="case-facts">
       {hasServices && (
         <div>
-          <dt className="t-label text-ink-faint">What I did</dt>
+          <dt className="t-label text-ink-muted">What I did</dt>
           <dd>{services!.join(' · ')}</dd>
         </div>
       )}
 
       {hasMore && (
         <div>
-          <dt className="t-label text-ink-faint">Images</dt>
+          <dt className="t-label text-ink-muted">Images</dt>
           <dd>
             <button
               type="button"
@@ -61,7 +61,7 @@ export default function CaseFacts({ services, publicUrl, slides }: Props) {
 
       {publicUrl && (
         <div>
-          <dt className="t-label text-ink-faint">Live site</dt>
+          <dt className="t-label text-ink-muted">Live site</dt>
           <dd>
             <a
               href={publicUrl}
