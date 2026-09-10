@@ -10,6 +10,7 @@ import { PortfolioPageFields } from '@/../declarations';
 import { ModalContextProvider } from '@/components/ModalContext/ModalContext';
 import FeaturedImage from '@/components/FeaturedImage/FeaturedImage';
 import CaseFacts from '@/components/CaseFacts/CaseFacts';
+import GalleryStatic from '@/components/GalleryStatic/GalleryStatic';
 
 /**
  * Case studies are built as static pages, so a CMS outage cannot reach them:
@@ -126,11 +127,7 @@ export default async function PortfolioPage({
               title={title}
               slides={slides}
             />
-            <CaseFacts
-              services={servicesList}
-              publicUrl={publicUrl}
-              slides={slides}
-            />
+            <CaseFacts services={servicesList} publicUrl={publicUrl} />
           </aside>
         )}
 
@@ -151,6 +148,20 @@ export default async function PortfolioPage({
           </p>
         )}
       </div>
+
+      {/* The rest of the work, shown rather than described. This is an
+          Experience surface: trading artifacts for a count of them puts the
+          proof behind a modal, which is the same fault as burying it below a
+          hero. Tiles carry their true lightbox index, so the hero staying at
+          slide 0 does not shift them. */}
+      {extras.length > 0 && (
+        <section className="mt-16">
+          <h2 className="t-label rule-strong-bottom mb-6 pb-3 text-ink-muted">
+            More from this project
+          </h2>
+          <GalleryStatic slides={slides} from={1} />
+        </section>
+      )}
 
       <div className="close-band mt-16">
         <div>

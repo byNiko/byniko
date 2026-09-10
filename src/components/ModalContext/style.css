@@ -86,6 +86,32 @@
   border-radius: 0;
 }
 
+/* The close control, in the site's own language: a hairline box on a dark
+   field. It lives here, with the component that renders it — it previously sat
+   in GalleryStatic/style.css and stopped loading entirely the moment a route
+   stopped rendering that component, shipping a 20px unstyled glyph pinned to
+   the wrong edge of the overlay. */
+.close-modal {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  background: transparent;
+  border: 1px solid rgb(247 247 245 / 0.45);
+  color: var(--paper-raised);
+  cursor: pointer;
+  z-index: 1001;
+}
+
+.close-modal:hover {
+  background: rgb(247 247 245 / 0.14);
+}
+
 /* Swiper's arrows are its own glyphs; give them a legible ground rather than
    the drop-shadow the old stylesheet used, which the no-shadow rule bans. */
 .fullscreen-modal .swiper-button-next,

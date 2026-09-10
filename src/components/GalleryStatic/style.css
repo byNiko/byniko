@@ -4,6 +4,16 @@
   gap: 1rem;
 }
 
+/* A 15rem minimum resolves to one column below 30rem, which stacked seven
+   tiles into 1,627px of scrolling on a phone. Two columns is the density the
+   thumbnails want there; it is a grid fault, not a reason to hide the work. */
+@media (max-width: 30rem) {
+  .static-gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+}
+
 .static-gallery__item {
   position: relative;
   overflow: hidden;
@@ -52,63 +62,26 @@
   transform: scale(1.035);
 }
 
-/* the featured image reads as the same material, one size up */
-.featured-image {
-  position: relative;
-  overflow: hidden;
-  border: 1px solid var(--rule);
-  background: var(--paper-sunk);
-  cursor: zoom-in;
-}
-
-.featured-image img {
-  width: 100%;
-  height: auto;
-  transition: transform var(--dur) var(--ease-out);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .featured-image:hover img {
-    transform: scale(1.02);
-  }
-}
-.featured-image:focus img {
-  transform: scale(1.02);
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .static-gallery__item img,
-  .featured-image img {
+  .static-gallery__item img {
     transition-duration: 1ms;
   }
   /* matches the specificity of the restore rules above, so it can actually
      override their scale */
   .static-gallery .static-gallery__item:hover img,
-  .static-gallery .static-gallery__item:focus img,
-  .featured-image:hover img,
-  .featured-image:focus img {
+  .static-gallery .static-gallery__item:focus img {
     transform: none;
   }
 }
 
-/* the lightbox close control, in the site's own language */
-.close-modal {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.75rem;
-  height: 2.75rem;
-  padding: 0;
-  background: transparent;
-  border: 1px solid rgb(247 247 245 / 0.45);
-  color: var(--paper-raised);
-  cursor: pointer;
-  z-index: 1001;
-}
+/* `.close-modal` used to live here, and `.featured-image` with it. Both were
+   orphaned the moment a route stopped rendering GalleryStatic: the stylesheet
+   is imported by this component, so it simply stopped loading, and the lightbox
+   close control shipped as a 20px unstyled glyph in the wrong corner. The close
+   control now lives in ModalContext/style.css, beside the component that
+   renders it. `.featured-image` is deleted — the case-study hero is
+   `.hero-frame` in globals.css.
 
-.close-modal:hover {
-  background: rgb(247 247 245 / 0.14);
-}
+   The rule this is the second instance of: a component's styles belong to the
+   component that renders the element, never to a sibling that happens to
+   import them. */
