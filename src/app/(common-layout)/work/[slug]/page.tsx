@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { Document } from '@contentful/rich-text-types';
+import type { Asset } from 'contentful';
 
 import { getAllPortfolioItems, getPortfolioItem } from '@/lib/contentful';
 import { renderOptions } from '@/components/rich-text/renderOptions';
@@ -54,7 +55,10 @@ export default async function PortfolioPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const post = await getPortfolioItem(slug);
+  const [post, projects] = await Promise.all([
+    getPortfolioItem(slug),
+    getAllPortfolioItems(),
+  ]);
   if (!post) return notFound();
 
   const { title, body, mainImage, servicesList, gallery, publicUrl } =
@@ -64,8 +68,33 @@ export default async function PortfolioPage({
     ? documentToReactComponents(body as Document, renderOptions)
     : null;
 
+  /**
+   * The hero is slide 0 of the lightbox. Previously the hero was a button
+   * that early-returned when a project had no gallery — dead on six of nine
+   * projects — and opened `gallery[0]` on the rest, which is not the image
+   * the visitor clicked.
+   */
+  const assetId = (asset?: Asset) => asset?.sys?.id;
+  const extras = (gallery ?? []).filter(
+    (asset) => assetId(asset) !== assetId(mainImage),
+  );
+  const slides = mainImage ? [mainImage, ...extras] : extras;
+
+  /**
+   * The visitor's real question is "have they done work like mine", which
+   * means reading two or three of these. Without a forward move that costs a
+   * round trip through the index every time.
+   */
+  const index = projects.findIndex((project) => project.sys.id === post.sys.id);
+  const nextProject =
+    projects.length > 1 && index !== -1
+      ? projects[(index + 1) % projects.length]
+      : null;
+  const nextFields = nextProject?.fields as PortfolioPageFields | undefined;
+
   return (
     <ModalContextProvider>
+      <div className="case-shell">
       <nav aria-label="Breadcrumb" className="mb-6">
         <Link
           href="/work"
@@ -75,7 +104,7 @@ export default async function PortfolioPage({
         </Link>
       </nav>
 
-      <header className="rule-bottom pb-10">
+      <header className="rule-bottom pb-8">
         <h1
           className="t-statement t-statement--feature"
           style={{ maxWidth: 'min(15ch, 100%)' }}
@@ -84,79 +113,79 @@ export default async function PortfolioPage({
         </h1>
       </header>
 
-      <div className="mt-10 grid gap-12 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-16">
-        <div className="order-2 lg:order-1">
-          {mainImage && (
-            <FeaturedImage
-              mainImage={mainImage}
-              title={title}
-              slides={gallery ?? []}
-            />
-          )}
-
-          {parsedBody ? (
-            <div className="prose prose-niko prose-lg mt-10 max-w-[min(68ch,100%)]">
-              {parsedBody}
-            </div>
-          ) : (
-            <p className="t-prose mt-10 text-ink-muted">
-              The write-up for this project isn&rsquo;t published yet. The
-              services listed alongside are accurate — ask me about it and
-              I&rsquo;ll walk you through the work.
+      {/* One hairline row, not a panel: the sidebar this replaces was empty on
+          seven of nine projects. Rendered only when it carries something, so
+          the empty state is an absent row rather than a bare double hairline. */}
+      {(servicesList?.length || publicUrl) && (
+        <div className="meta-row">
+          {servicesList?.length ? (
+            <p className="t-label text-ink-muted">
+              <span className="sr-only">What I did: </span>
+              {servicesList.join(' · ')}
             </p>
+          ) : (
+            <span />
           )}
-
-          {gallery && gallery.length > 0 && (
-            <section className="mt-14">
-              <h2 className="t-label rule-strong-bottom mb-6 pb-3 text-ink-muted">
-                More from this project
-              </h2>
-              <GalleryStatic slides={gallery} />
-            </section>
+          {publicUrl && (
+            <a
+              href={publicUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="action-quiet shrink-0"
+            >
+              Visit the live site <span aria-hidden>↗</span>
+            </a>
           )}
         </div>
+      )}
 
-        <aside className="order-1 self-start lg:sticky lg:top-28 lg:order-2">
-          <div className="facts">
-            <dl className="m-0">
-              {servicesList?.length ? (
-                <div className="facts-row">
-                  <dt className="facts-key t-label">What I did</dt>
-                  <dd className="facts-value m-0">
-                    <ul className="m-0 list-none space-y-1 p-0">
-                      {servicesList.map((service) => (
-                        <li key={service}>{service}</li>
-                      ))}
-                    </ul>
-                  </dd>
-                </div>
-              ) : null}
-              <div className="facts-row">
-                <dt className="facts-key t-label">Practice</dt>
-                <dd className="facts-value m-0">byNiko — sole proprietor</dd>
-              </div>
-            </dl>
-            {publicUrl && (
-              <a
-                href={publicUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="action no-underline"
-              >
-                Visit the live site <span className="arrow">↗</span>
-              </a>
-            )}
-          </div>
+      {mainImage && (
+        <div className="mt-10">
+          <FeaturedImage mainImage={mainImage} title={title} slides={slides} />
+        </div>
+      )}
 
-          <div className="rule-top mt-8 pt-8">
-            <p className="t-prose text-sm text-ink-muted">
-              Working on something like this?
-            </p>
-            <Link href="/contact" className="action-quiet mt-3">
-              Start a project <span aria-hidden>→</span>
+      {parsedBody ? (
+        <div className="prose prose-niko prose-lg mx-auto mt-12 max-w-[var(--measure-longform)]">
+          {parsedBody}
+        </div>
+      ) : (
+        <p className="t-prose mx-auto mt-12 text-ink-muted">
+          The write-up for this project isn&rsquo;t published yet. What I did is
+          listed above — ask me about it and I&rsquo;ll walk you through the
+          work.
+        </p>
+      )}
+
+      {extras.length > 0 && (
+        <section className="mt-16">
+          <h2 className="t-label rule-strong-bottom mb-6 pb-3 text-ink-muted">
+            More from this project
+          </h2>
+          <GalleryStatic slides={extras} />
+        </section>
+      )}
+
+      <div className="close-band mt-16">
+        <div>
+          <p className="t-title">Working on something like this?</p>
+          <Link href="/contact" className="action-quiet mt-2">
+            Start a project <span aria-hidden>→</span>
+          </Link>
+        </div>
+
+        {nextFields?.slug && (
+          <div className="sm:text-right">
+            <p className="t-label text-ink-faint">Next project</p>
+            <Link
+              href={`/work/${nextFields.slug}`}
+              className="action-quiet mt-2"
+            >
+              {nextFields.title} <span aria-hidden>→</span>
             </Link>
           </div>
-        </aside>
+        )}
+      </div>
       </div>
     </ModalContextProvider>
   );

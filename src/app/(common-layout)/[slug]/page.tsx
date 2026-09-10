@@ -56,7 +56,7 @@ export default async function PostPage({
 
       <div className="mt-12 grid gap-12 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-20">
         {parsedBody && (
-          <div className="prose prose-niko prose-lg max-w-[min(68ch,100%)]">
+          <div className="prose prose-niko prose-lg max-w-[var(--measure-longform)]">
             {parsedBody}
           </div>
         )}

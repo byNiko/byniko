@@ -34,8 +34,12 @@
      composite to its computed alpha reliably. */
   --scrim: rgb(20 22 26 / 0.94);
 
-  /* ch-based measures must never win against a narrow viewport */
-  --measure-prose: min(54ch, 100%);
+  /* ch-based measures must never win against a narrow viewport.
+     Archivo's average advance is far below the `0` glyph the ch unit
+     measures, so a nominal 54ch renders ~73 characters. These values are
+     tuned to the rendered line, not the nominal one. */
+  --measure-prose: min(40ch, 100%);
+  --measure-longform: min(50ch, 100%);
   --measure-statement: min(20ch, 100%);
 
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -321,6 +325,7 @@ img {
 .action-quiet {
   display: inline-flex;
   align-items: center;
+  min-height: 2.75rem;
   gap: 0.4rem;
   color: var(--accent);
   font-weight: 600;
@@ -529,6 +534,80 @@ img {
 }
 .facts .action {
   width: 100%;
+}
+
+/* --- case study ------------------------------------------------------------
+   A hairline meta row rather than a panel. The sidebar it replaces was empty
+   on seven of nine projects, because its payload was services (already on the
+   index card), a constant practice row, and a link only two projects have. */
+
+/* Case studies run in a narrower column than the shell. At full shell width a
+   700px reading measure sits under a 1440px hero and the page reads broken;
+   the hero and the prose have to belong to one column. */
+.case-shell {
+  max-width: 68rem;
+}
+
+.meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem 2rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+/* Every hero sits in the same frame the work grid and gallery use, so the
+   index no longer promises a shape the detail page breaks. The uncropped
+   original stays one tap away in the lightbox. */
+.hero-frame {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--paper-sunk);
+  border: 1px solid var(--rule);
+  padding: 0;
+  cursor: zoom-in;
+}
+
+.hero-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hero-frame:hover img {
+    transform: scale(1.02);
+  }
+}
+.hero-frame:focus img {
+  transform: scale(1.02);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-frame img {
+    transition-duration: 1ms;
+  }
+  .hero-frame:hover img,
+  .hero-frame:focus img {
+    transform: none;
+  }
+}
+
+/* the page closes on a forward move rather than stopping */
+.close-band {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5rem 2rem;
+  border-top: 1.5px solid var(--rule-strong);
+  padding-top: 1.5rem;
 }
 
 /* --- editorial prose ----------------------------------------------------- */

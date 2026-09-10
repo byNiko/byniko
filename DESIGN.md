@@ -281,7 +281,7 @@ Width is authored in CSS as `font-stretch` percentages on the `.t-*` role classe
 - **Display** (`.t-display`, 600, `wdth` 108, -0.028em, 1.1): Section headings below the page statement, and the contact form's success heading. Base curve `clamp(1.75rem, 1.35rem + 1vw, 2.25rem)`; the two fixed modifiers `--sm` (1.5rem) and `--xs` (1.375rem) are for headings inside a column too narrow to justify a fluid curve. One notch narrower and looser than Statement so the two never read as peers.
 - **Title** (`.t-title`, 600, `wdth` 102, -0.015em, 1.4, 1.0625rem): The recurring inline heading — project names in the work grid, service names in the definition lists, list rows. Now a real class; it was previously three declarations repeated at six call sites.
 - **Lede** (`.t-lede`, 1.0625rem): The opening paragraph under a statement. It is Body's size and weight carrying a positional job, which is why it is its own class rather than a size on the paragraph.
-- **Body / Prose** (`.t-prose`, 400, `wdth` 100, 1.65 line-height, capped at `min(54ch, 100%)`): All running text. The measure cap is part of the role, not a per-surface decision.
+- **Body / Prose** (`.t-prose`, 400, `wdth` 100, 1.65 line-height, capped at `min(40ch, 100%)`): All running text. The measure cap is part of the role, not a per-surface decision.
 - **Wordmark** (`.wordmark`, 700, `wdth` 104, -0.02em, 1.15rem): The practice name, shared by the masthead and the footer so the two can never drift apart.
 - **Label** (`.t-label`, 600, `wdth` 82, 0.688rem, 0.15em tracking, uppercase, 1.4): Real section headings that name a region and are marked up as such (the `h2`s "Selected work", "Pages", "More from this project"), facts-panel keys, form field labels, the breadcrumb, project counts, footer meta. This is the system's only uppercase. It is a heading and labelling role, never a decorative line stacked above a headline.
 - **Meta** (`.t-meta`, 500, `wdth` 88, 0.75rem, 0.02em): Sentence-case supporting data — the services list under each project, the required-fields note on the form.
@@ -301,7 +301,9 @@ Width is authored in CSS as `font-stretch` percentages on the `.t-*` role classe
 
 The site is a single-column stack of full-bleed horizontal bands, each separated from the next by a hairline. Every band's content is constrained by one shared container, `.shell`: `max-width: 96rem`, centered, with inline padding stepping 1.25rem → 2.5rem at 48rem → 3.5rem at 90rem. Nothing on the site sits outside the shell, and nothing touches the viewport edge.
 
-Within a band, the recurring device is a two-column asymmetric split that collapses to a stack: content plus a fixed-width sidebar (`minmax(0,1fr)` beside `23rem` on the home page, `20rem` on case studies and flat pages), with a 3rem–5rem gap, promoted at the `lg` breakpoint. On flat pages and case studies the sidebar is sticky at `top-28`. Case studies invert source order on small screens so the facts panel arrives before the body.
+Within a band, the recurring device is a two-column asymmetric split that collapses to a stack: content plus a fixed-width sidebar (`minmax(0,1fr)` beside `23rem` on the home page, `20rem` on flat pages), with a 3rem–5rem gap, promoted at the `lg` breakpoint. On flat pages the sidebar is sticky at `top-28`.
+
+**Case studies are single-column at every width.** They previously used the same split, and it was measured empty: the sidebar filled 7.6–16.1% of the column beside it, leaving 1,218–1,835px of blank gutter, because its payload was the services already shown on the index card, a constant practice row the masthead states anyway, and a live-site link only two of nine projects have. A column is only earned when the content model reliably fills it.
 
 The work grid is 1 column, 2 columns at 40rem, 3 columns at 64rem, with an asymmetric gap (2.25rem row, 1.5rem column) so rows breathe more than columns. Each cell's image sits in a 16:10 frame. The case-study static gallery uses the same material at a smaller module: `repeat(auto-fill, minmax(min(100%, 15rem), 1fr))` with a 1rem gap.
 
@@ -315,7 +317,7 @@ Interactive text has a minimum size independent of its type size: `.link-target`
 
 **The Shell Rule.** Every full-width band is a bare section with `.shell` inside it. Bands own the background and the hairline; the shell owns the horizontal constraint. Do not invent a second container width.
 
-**The Bounded Measure Rule.** Every `ch`-based measure is wrapped in `min(…, 100%)` — including the tokens `--measure-prose` (54ch) and `--measure-statement` (20ch), the 68ch long-form cap, and every inline `min(15ch, 100%)`-style cap on a page heading. A bare `ch` measure does not shrink below its own character count and overflowed narrow viewports; the `min()` wrapper is what makes these headlines safe on a phone. Verified: there is no bare `ch` value anywhere in `src/`. Never write one.
+**The Bounded Measure Rule.** Every `ch`-based measure is wrapped in `min(…, 100%)` — including the tokens `--measure-prose` (40ch), `--measure-longform` (50ch) and `--measure-statement` (20ch), and every inline `min(15ch, 100%)`-style cap on a page heading. A bare `ch` measure does not shrink below its own character count and overflowed narrow viewports; the `min()` wrapper is what makes these headlines safe on a phone. Verified: there is no bare `ch` value anywhere in `src/`. Never write one.
 
 **The Thumb Floor Rule.** A text link that is not already a button gets `.link-target`. Height comes from padding on an `inline-flex` box, never from line-height or font-size — the type role is not allowed to change to satisfy a target size.
 
@@ -377,7 +379,7 @@ Form language is otherwise built from straight lines: full-width hairline divide
 
 **Character:** A specification block — the referral's questions answered before they are asked.
 
-A bordered white panel with no radius, containing a definition list rendered as a hairline table: a `6.5rem` key column in the Label role and muted ink, a hairline down the middle, a fluid value column at 0.875rem medium. Every row closes with a bottom hairline. When the panel takes an action, the button is full-width and flush inside the panel's border, so the green edge-to-edge bar becomes the panel's own footer. It appears in three registers: full practice facts on the home page, the same panel sticky on flat CMS pages, and a reduced two-row version on case studies. The contact form and its success confirmation reuse the same `.facts` container, which is how the form reads as part of the same family.
+A bordered white panel with no radius, containing a definition list rendered as a hairline table: a `6.5rem` key column in the Label role and muted ink, a hairline down the middle, a fluid value column at 0.875rem medium. Every row closes with a bottom hairline. When the panel takes an action, the button is full-width and flush inside the panel's border, so the green edge-to-edge bar becomes the panel's own footer. It appears in two registers: full practice facts on the home page, and the same panel sticky on flat CMS pages. It is deliberately absent from case studies, where its content did not exist — see the Earned Column Rule. The contact form and its success confirmation reuse the same `.facts` container, which is how the form reads as part of the same family.
 
 ### Navigation
 
@@ -400,7 +402,7 @@ The underline itself is a green pseudo-element scaling from a left origin over 4
 
 ### Editorial Prose
 
-CMS rich text is rendered through Tailwind Typography with a `.prose-niko` theme that rebinds every prose variable to system tokens: ink body and headings, green links and quote borders, hairline bullets and horizontal rules, muted captions. Prose headings pick up `wdth` 104 and -0.02em tracking so they belong to the same width family as the rest of the page, and links carry a green underline color. Prose is capped at `min(68ch, 100%)` on case studies and flat pages — wider than the 54ch `--measure-prose` used for interface copy, because long-form reading tolerates a longer line.
+CMS rich text is rendered through Tailwind Typography with a `.prose-niko` theme that rebinds every prose variable to system tokens: ink body and headings, green links and quote borders, hairline bullets and horizontal rules, muted captions. Prose headings pick up `wdth` 104 and -0.02em tracking so they belong to the same width family as the rest of the page, and links carry a green underline color. Prose is capped at `--measure-longform` (`min(50ch, 100%)`) on case studies and flat pages — wider than the 40ch `--measure-prose` used for interface copy, because long-form reading tolerates a longer line. **These numbers are tuned to the rendered line, not the nominal one.** Archivo's average advance sits far below the `0` glyph that the `ch` unit measures, so a nominal 68ch rendered at 89–94 characters — well past the 65–75 reading range. Measured after correction: 65–71 characters at 1440. Never set a `ch` measure from the nominal figure without measuring the result.
 
 ### Case-Study Imagery
 
@@ -425,6 +427,10 @@ Two tokens govern everything: `--ease-out: cubic-bezier(0.16, 1, 0.3, 1)` (expon
 The entrance is one staggered pass: `.settle` translates elements up from `0.55rem` over 640ms with a `--i * 70ms` delay, applied to the home statement, its paragraph, and the facts panel. **It animates `transform` only — never opacity.** Starting from an already-legible default means no element is ever held invisible waiting on its stagger delay, which keeps the first paint honest and survives a stalled animation. The whole block is inside `@media (prefers-reduced-motion: no-preference)`.
 
 ### Named Rules
+
+**The Earned Column Rule.** A sidebar is earned by content that reliably fills it, not by the layout looking balanced. The case-study split was removed after measurement: 7.6–16.1% fill, up to 1,835px of empty gutter, on a panel whose three rows were a duplicate, a constant, and a field present on two of nine projects. Before adding a column, check what the content model actually holds across every instance — not the richest one.
+
+**The One Crop Policy Rule.** Every project image renders in a 16:10 frame with `object-fit: cover` and `object-position: top center` — the work grid, the case-study hero, and the gallery tiles alike. Source ratios run 1.13–1.83, and rendering them raw made the hero swing 565–832px in height at identical width while the index promised a tidy card. The uncropped original is never lost: the hero is slide 0 of the lightbox, so the full frame is always one tap away.
 
 **The One Authored Moment Rule.** The work grid is the site's single orchestrated interaction. New components get state changes that answer the user (a color, a rule, an outline) — not their own choreography. Scattered micro-animations spend the budget this moment needs. The case-study gallery is not a second moment; it is the same moment reused on the same material.
 
