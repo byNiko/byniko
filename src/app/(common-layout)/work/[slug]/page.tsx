@@ -49,6 +49,25 @@ export async function generateMetadata({
   };
 }
 
+/**
+ * Rendered twice and shown once: in the artifact column above 72rem, and after
+ * the story below it. Stacked, the column sits above the body, and an offer
+ * placed there would ask before the work has finished proving anything —
+ * measured, it pushed the story from y=759 to y=902 on an 844px phone, off the
+ * first screen entirely. `display: none` removes the unused copy from the
+ * accessibility tree, so exactly one exists at any width.
+ */
+function CaseCta({ where }: { where: 'column' | 'band' }) {
+  return (
+    <div className={`case-cta case-cta--${where}`}>
+      <p className="t-title">Working on something like this?</p>
+      <Link href="/contact" className="action">
+        Start a project <span aria-hidden>→</span>
+      </Link>
+    </div>
+  );
+}
+
 export default async function PortfolioPage({
   params,
 }: {
@@ -82,15 +101,19 @@ export default async function PortfolioPage({
 
   /**
    * The visitor's real question is "have they done work like mine", which
-   * means reading two or three of these. Without a forward move that costs a
-   * round trip through the index every time.
+   * means reading two or three of these. Without a move between them that
+   * costs a round trip through the index every time. The sequence is the
+   * curated `workIndex` order, so stepping through it is meaningful rather
+   * than alphabetical accident; it wraps, so neither end is a dead stop.
    */
   const index = projects.findIndex((project) => project.sys.id === post.sys.id);
-  const nextProject =
+  const step = (n: number) =>
     projects.length > 1 && index !== -1
-      ? projects[(index + 1) % projects.length]
-      : null;
-  const nextFields = nextProject?.fields as PortfolioPageFields | undefined;
+      ? ((projects[(index + n + projects.length) % projects.length]?.fields ??
+          undefined) as PortfolioPageFields | undefined)
+      : undefined;
+  const prevFields = step(-1);
+  const nextFields = step(1);
 
   return (
     <ModalContextProvider>
@@ -127,6 +150,11 @@ export default async function PortfolioPage({
           <aside className="case-art">
             <CaseArtifact title={title} slides={slides} />
             <CaseFacts services={servicesList} publicUrl={publicUrl} />
+
+            {/* The one solid green in the column, and the only thing in it set
+                in a heading role — it has to read as an offer, not another
+                row of the caption above it. */}
+            <CaseCta where="column" />
           </aside>
         )}
 
@@ -148,26 +176,40 @@ export default async function PortfolioPage({
         )}
       </div>
 
-      <div className="close-band mt-16">
-        <div>
-          <p className="t-title">Working on something like this?</p>
-          <Link href="/contact" className="action-quiet mt-2">
-            Start a project <span aria-hidden>→</span>
-          </Link>
-        </div>
+      <CaseCta where="band" />
 
-        {nextFields?.slug && (
-          <div className="sm:text-right">
-            <p className="t-label text-ink-faint">Next project</p>
-            <Link
-              href={`/work/${nextFields.slug}`}
-              className="action-quiet mt-2"
-            >
-              {nextFields.title} <span aria-hidden>→</span>
-            </Link>
-          </div>
-        )}
-      </div>
+      {/* The close is a pager now that the offer has moved into the column:
+          two moves along the curated order rather than one link left alone. */}
+      {(prevFields?.slug || nextFields?.slug) && (
+        <nav className="close-band mt-16" aria-label="More projects">
+          {prevFields?.slug ? (
+            <div className="pager-step">
+              <p className="t-label text-ink-faint">Previous project</p>
+              <Link
+                href={`/work/${prevFields.slug}`}
+                className="action-quiet mt-2"
+              >
+                <span aria-hidden>←</span> {prevFields.title}
+              </Link>
+            </div>
+          ) : (
+            <span />
+          )}
+
+          {nextFields?.slug && (
+            <div className="pager-step pager-step--end">
+              <p className="t-label text-ink-faint">Next project</p>
+              <Link
+                href={`/work/${nextFields.slug}`}
+                className="action-quiet mt-2"
+              >
+                {nextFields.title} <span aria-hidden>→</span>
+              </Link>
+            </div>
+          )}
+        </nav>
+      )}
+
       </div>
     </ModalContextProvider>
   );

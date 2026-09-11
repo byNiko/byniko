@@ -723,6 +723,44 @@ img {
   }
 }
 
+/* The offer, sitting under the artifact's caption as the column's own footer.
+   It has to read as a different kind of thing from the hairline rows above it,
+   so it differs on three axes at once rather than one: space (2rem of air
+   against the rows' 0.7rem), type role (Title, the only non-Label in the
+   column), and colour (the one solid green on the page). That is also the
+   facts panel's established move on the home page — the green edge-to-edge bar
+   becomes the panel's footer — reused rather than invented. */
+.case-cta {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1.5px solid var(--rule-strong);
+}
+
+/* Exactly one of the pair is ever in the document: the column copy only once
+   the split opens, the band copy only while the column sits above the story. */
+.case-cta--column {
+  display: none;
+}
+@media (min-width: 72rem) {
+  .case-cta--column {
+    display: block;
+  }
+  .case-cta--band {
+    display: none;
+  }
+}
+
+.case-cta .action {
+  width: 100%;
+  margin-top: 0.85rem;
+}
+
+/* Each end of the pager keeps its own label above its link, so the two read as
+   a pair of moves rather than a sentence running across the page. */
+.pager-step--end {
+  text-align: right;
+}
+
 /* the page closes on a forward move rather than stopping */
 .close-band {
   display: flex;
