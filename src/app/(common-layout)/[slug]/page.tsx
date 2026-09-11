@@ -44,7 +44,7 @@ export default async function PostPage({
     : null;
 
   return (
-    <>
+    <div className="case-shell">
       <header className="rule-bottom pb-10 md:pb-14">
         <h1
           className="t-statement"
@@ -54,11 +54,9 @@ export default async function PostPage({
         </h1>
       </header>
 
-      <div className="mt-12 grid gap-12 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-20">
+      <div className="flat-split">
         {parsedBody && (
-          <div className="prose prose-niko prose-lg max-w-[var(--measure-longform)]">
-            {parsedBody}
-          </div>
+          <div className="flat-body prose prose-niko prose-lg">{parsedBody}</div>
         )}
         <FactsPanel className="lg:sticky lg:top-28" />
       </div>
@@ -71,6 +69,6 @@ export default async function PostPage({
           Start a project <span className="arrow">→</span>
         </Link>
       </div>
-    </>
+    </div>
   );
 }

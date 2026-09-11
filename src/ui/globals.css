@@ -547,8 +547,11 @@ img {
    depends on how many headings it has or whether it has any — because a layout
    that infers structure from prose makes the author responsible for a contract
    they cannot see in the CMS. */
+/* The reading shell: one inner container for every long-form page, case
+   studies and flat CMS pages alike. 72rem is what the parts add up to —
+   a 40rem reading column, a 4rem gutter, and a 28rem companion column. */
 .case-shell {
-  max-width: 68rem;
+  max-width: 72rem;
   margin-inline: auto;
 }
 
@@ -575,7 +578,7 @@ img {
 .case-art {
   width: 100%;
   min-width: 0;
-  max-width: 36rem;
+  max-width: 40rem;
   margin-inline: auto;
 }
 
@@ -605,7 +608,7 @@ img {
    stacks above the story, which is the right phone answer anyway. */
 @media (min-width: 72rem) {
   .case-split {
-    grid-template-columns: minmax(0, 36rem) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 40rem) minmax(0, 1fr);
     gap: 0 4rem;
     align-items: start;
   }
@@ -623,13 +626,17 @@ img {
   }
 }
 
-/* 36rem, not `--measure-longform`. That token is 50ch tuned against 16px body
-   copy; case-study prose runs at prose-lg's 18px, where the same 50ch renders
-   only 54–62 characters. Measured at 36rem: 65–70. The token stays correct for
-   every 16px surface — this is the same rule it encodes, applied to a larger
-   size, and it is why a `ch` measure is never trusted without measuring. */
-.case-body {
-  max-width: 36rem;
+/* 40rem, not `--measure-longform`. That token is 50ch tuned against 16px body
+   copy; every long-form surface here runs at prose-lg's 18px, where the same
+   50ch renders only 54–58 characters — well under the 65–75 range. Measured at
+   36rem: 67. At 40rem: 72–76 across case studies and both flat pages, which is
+   deliberately at the top of the range rather than the middle of it. The token
+   stays correct for every 16px surface; this
+   is the same rule it encodes, applied at a larger size, and it is why a `ch`
+   measure is never trusted without measuring the result. */
+.case-body,
+.flat-body {
+  max-width: 40rem;
 }
 
 /* Section headings take the site's Label role rather than a prose size, so a
@@ -720,6 +727,24 @@ img {
   .hero-frame:hover img,
   .hero-frame:focus img {
     transform: none;
+  }
+}
+
+/* Flat CMS pages take the same two-column shape. The reading track was
+   `minmax(0, 1fr)` with the prose capped inside it, which left the prose at
+   515px in a 928px track and opened 493px of dead paper between the copy and
+   the facts panel. Naming the track the measure closes it. */
+.flat-split {
+  display: grid;
+  gap: 3rem 0;
+  margin-top: 3rem;
+}
+
+@media (min-width: 64rem) {
+  .flat-split {
+    grid-template-columns: minmax(0, 40rem) minmax(0, 1fr);
+    gap: 0 4rem;
+    align-items: start;
   }
 }
 
