@@ -537,25 +537,156 @@ img {
 }
 
 /* --- case study ------------------------------------------------------------
-   A hairline meta row rather than a panel. The sidebar it replaces was empty
-   on seven of nine projects, because its payload was services (already on the
-   index card), a constant practice row, and a link only two projects have. */
+   The story reads in one column while the project stays parked beside it.
+   A previous pass deleted the sidebar after measuring its contents — thin, and
+   empty on seven of nine projects. The contents were never its job: holding the
+   work in view while the story is read was. So the column returns carrying the
+   artifact, and the metadata rides underneath it as caption rather than payload.
 
-/* Case studies run in a narrower column than the shell. At full shell width a
-   700px reading measure sits under a 1440px hero and the page reads broken;
-   the hero and the prose have to belong to one column. */
+   The body is one free-form CMS field. Nothing here reads inside it — no rule
+   depends on how many headings it has or whether it has any — because a layout
+   that infers structure from prose makes the author responsible for a contract
+   they cannot see in the CMS. */
+/* The reading shell: one inner container for every long-form page, case
+   studies and flat CMS pages alike. 72rem is what the parts add up to —
+   a 40rem reading column, a 4rem gutter, and a 28rem companion column. */
 .case-shell {
-  max-width: 68rem;
+  max-width: 72rem;
+  margin-inline: auto;
 }
 
-.meta-row {
+.case-split {
+  display: grid;
+  /* minmax(0, …) rather than the default `auto`: a grid item's `min-width` is
+     `auto`, so it cannot shrink below its content's min-content size. Swiper
+     writes pixel widths onto its slides at init, which becomes a min-content
+     floor and pinned the stacked column open at 36rem inside a 350px track —
+     576px of content in a 390px viewport, scrolling the page sideways. */
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2.5rem 0;
+  margin-top: 2.5rem;
+}
+
+/* Stacked, the artifact keeps the reading column's width instead of running
+   the full shell. Left unbounded it rendered 944px wide and 785px tall at
+   1024, pushing the story to y=1138 — the exact fault this layout removes,
+   reintroduced one breakpoint down.
+
+   `width: 100%` is load-bearing: an `auto` inline margin on a grid item
+   overrides `justify-self: stretch` and sizes the box to fit-content, which
+   collapsed a project with no facts rows to a 140px thumbnail. */
+.case-art {
+  width: 100%;
+  min-width: 0;
+  max-width: 40rem;
+  margin-inline: auto;
+}
+
+/* Tablets have width the phone layout throws away. Between 48rem and the full
+   split, the artifact and its caption sit side by side inside the stacked
+   block rather than each taking a full-width turn: measured at 768 that moved
+   the story from y=952 to the top of the first screen. */
+@media (min-width: 48rem) and (max-width: 71.9375rem) {
+  .case-art {
+    /* 48rem, not `none`: unbounded the artifact column reached 656px at 1024 —
+       wider than the 448px stage the full split settles on, which is the
+       oversized-hero fault returning one breakpoint down. */
+    max-width: 48rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 16rem;
+    align-items: start;
+    gap: 0 2rem;
+  }
+  .case-art .case-facts {
+    margin-top: 0;
+    border-top: 0;
+  }
+}
+
+/* Promoted late, at 72rem, so the reading column keeps its full measure rather
+   than being squeezed to make room for the artifact. Below this the artifact
+   stacks above the story, which is the right phone answer anyway. */
+@media (min-width: 72rem) {
+  .case-split {
+    grid-template-columns: minmax(0, 40rem) minmax(0, 1fr);
+    gap: 0 4rem;
+    align-items: start;
+  }
+  /* DOM order is artifact-then-story, so the narrative a screen reader hears
+     is the same one the page tells. The visual swap is the grid's job. */
+  .case-art {
+    position: sticky;
+    top: 6.5rem;
+    grid-area: 1 / 2;
+    max-width: none;
+    margin-inline: 0;
+  }
+  .case-body {
+    grid-area: 1 / 1;
+  }
+}
+
+/* 40rem, not `--measure-longform`. That token is 50ch tuned against 16px body
+   copy; every long-form surface here runs at prose-lg's 18px, where the same
+   50ch renders only 54–58 characters — well under the 65–75 range. Measured at
+   36rem: 67. At 40rem: 72–76 across case studies and both flat pages, which is
+   deliberately at the top of the range rather than the middle of it. The token
+   stays correct for every 16px surface; this
+   is the same rule it encodes, applied at a larger size, and it is why a `ch`
+   measure is never trusted without measuring the result. */
+.case-body,
+.flat-body {
+  max-width: 40rem;
+}
+
+/* Section headings take the site's Label role rather than a prose size, so a
+   case study's internal divisions read like every other section marker here.
+   h3 steps down within the same family: prose defaults would render it larger
+   than the h2 above it once the h2 is a label. */
+.case-body :where(h2) {
+  font-size: 0.75rem;
+  font-stretch: 100%;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  border-bottom: 1.5px solid var(--rule-strong);
+  padding-bottom: 0.75rem;
+  margin: 0 0 1.5rem;
+}
+.case-body :where(h2 ~ h2) {
+  margin-top: 3rem;
+}
+.case-body :where(h3) {
+  font-size: 0.6875rem;
+  font-stretch: 100%;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 2rem 0 0.75rem;
+}
+
+/* The facts read as the artifact's caption: they sit under it, share its
+   width, and are absent rather than empty when a project carries neither
+   services nor a live URL. */
+.case-facts {
+  margin-top: 1rem;
+  border-top: 1px solid var(--rule);
+}
+.case-facts > div {
   display: flex;
-  flex-wrap: wrap;
   align-items: baseline;
   justify-content: space-between;
-  gap: 0.75rem 2rem;
-  padding: 0.85rem 0;
+  gap: 1.5rem;
+  padding: 0.7rem 0;
   border-bottom: 1px solid var(--rule);
+}
+.case-facts dd {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  text-align: right;
 }
 
 /* Every hero sits in the same frame the work grid and gallery use, so the
@@ -597,6 +728,80 @@ img {
   .hero-frame:focus img {
     transform: none;
   }
+}
+
+/* Flat CMS pages take the same two-column shape. The reading track was
+   `minmax(0, 1fr)` with the prose capped inside it, which left the prose at
+   515px in a 928px track and opened 493px of dead paper between the copy and
+   the facts panel. Naming the track the measure closes it. */
+.flat-split {
+  display: grid;
+  gap: 3rem 0;
+  margin-top: 3rem;
+}
+
+@media (min-width: 64rem) {
+  .flat-split {
+    grid-template-columns: minmax(0, 40rem) minmax(0, 1fr);
+    gap: 0 4rem;
+    align-items: start;
+  }
+}
+
+/* Contact takes the same shell. Its supporting column is narrower than a
+   reading column — a lede and two short notes, not long-form — so the track is
+   named at that size rather than left as `1fr`, which had the copy filling
+   389px of a 600px column and opening 271px between it and the form. */
+.contact-split {
+  display: grid;
+  gap: 3rem 0;
+  margin-top: 3rem;
+}
+
+@media (min-width: 64rem) {
+  .contact-split {
+    grid-template-columns: minmax(0, 26rem) minmax(0, 1fr);
+    gap: 0 4rem;
+    align-items: start;
+  }
+}
+
+/* The offer, sitting under the artifact's caption as the column's own footer.
+   It has to read as a different kind of thing from the hairline rows above it,
+   so it differs on three axes at once rather than one: space (2rem of air
+   against the rows' 0.7rem), type role (Title, the only non-Label in the
+   column), and colour (the one solid green on the page). That is also the
+   facts panel's established move on the home page — the green edge-to-edge bar
+   becomes the panel's footer — reused rather than invented. */
+.case-cta {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1.5px solid var(--rule-strong);
+}
+
+/* Exactly one of the pair is ever in the document: the column copy only once
+   the split opens, the band copy only while the column sits above the story. */
+.case-cta--column {
+  display: none;
+}
+@media (min-width: 72rem) {
+  .case-cta--column {
+    display: block;
+  }
+  .case-cta--band {
+    display: none;
+  }
+}
+
+.case-cta .action {
+  width: 100%;
+  margin-top: 0.85rem;
+}
+
+/* Each end of the pager keeps its own label above its link, so the two read as
+   a pair of moves rather than a sentence running across the page. */
+.pager-step--end {
+  text-align: right;
 }
 
 /* the page closes on a forward move rather than stopping */

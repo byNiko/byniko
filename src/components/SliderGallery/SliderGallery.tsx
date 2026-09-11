@@ -51,7 +51,10 @@ export default function SliderGallery({
           .map((slide, index) => (
             <SwiperSlide key={index} className="swiper-slide">
               <div>
-                <ContentfulImage asset={slide} />
+                {/* A lightbox slide is the whole viewport; without this it
+                    inherited ContentfulImage's 33vw default and requested a
+                    variant sized for a grid tile. */}
+                <ContentfulImage asset={slide} sizes="100vw" />
               </div>
             </SwiperSlide>
           ))}

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function Contact() {
   return (
-    <>
+    <div className="case-shell">
       <header className="rule-bottom pb-10 md:pb-14">
         <h1
           className="t-statement"
@@ -19,7 +19,7 @@ export default function Contact() {
         </h1>
       </header>
 
-      <div className="mt-12 grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-20">
+      <div className="contact-split">
         <div>
           <p className="t-prose t-lede text-ink-muted">
             Every project starts with a conversation. Whether you have a fully
@@ -58,6 +58,6 @@ export default function Contact() {
           <ContactForm />
         </div>
       </div>
-    </>
+    </div>
   );
 }
