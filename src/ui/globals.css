@@ -748,6 +748,24 @@ img {
   }
 }
 
+/* Contact takes the same shell. Its supporting column is narrower than a
+   reading column — a lede and two short notes, not long-form — so the track is
+   named at that size rather than left as `1fr`, which had the copy filling
+   389px of a 600px column and opening 271px between it and the form. */
+.contact-split {
+  display: grid;
+  gap: 3rem 0;
+  margin-top: 3rem;
+}
+
+@media (min-width: 64rem) {
+  .contact-split {
+    grid-template-columns: minmax(0, 26rem) minmax(0, 1fr);
+    gap: 0 4rem;
+    align-items: start;
+  }
+}
+
 /* The offer, sitting under the artifact's caption as the column's own footer.
    It has to read as a different kind of thing from the hairline rows above it,
    so it differs on three axes at once rather than one: space (2rem of air
