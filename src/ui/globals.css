@@ -555,6 +555,18 @@ img {
   margin-inline: auto;
 }
 
+/* A case study carrying the artifact split gets more room at the full split
+   (≥72rem) than a flat page: the story column stays pinned at its own 40rem
+   measure, so every inch this adds goes straight to the artifact rather than
+   to unused margin. Below 72rem the split is single-column and .case-shell's
+   own 72rem still governs, so a tablet or phone case study reads exactly
+   like a flat page of the same width. */
+@media (min-width: 72rem) {
+  .case-shell--split {
+    max-width: 84rem;
+  }
+}
+
 .case-split {
   display: grid;
   /* minmax(0, …) rather than the default `auto`: a grid item's `min-width` is
@@ -585,21 +597,55 @@ img {
 /* Tablets have width the phone layout throws away. Between 48rem and the full
    split, the artifact and its caption sit side by side inside the stacked
    block rather than each taking a full-width turn: measured at 768 that moved
-   the story from y=952 to the top of the first screen. */
+   the story from y=952 to the top of the first screen.
+
+   No cap on the pair's own width here (a former 48rem ceiling used to hold
+   the artifact to the 448px stage the full split rendered at) — the full
+   split now runs its artifact at ~640px on its own (see `.case-shell--split`
+   above), so a same-scale hero at tablet is the consistent answer rather
+   than an oversized one. The facts+CTA column is a slim, fixed companion
+   instead of a second reading-width track, so the growth goes to the image. */
 @media (min-width: 48rem) and (max-width: 71.9375rem) {
   .case-art {
-    /* 48rem, not `none`: unbounded the artifact column reached 656px at 1024 —
-       wider than the 448px stage the full split settles on, which is the
-       oversized-hero fault returning one breakpoint down. */
-    max-width: 48rem;
+    max-width: none;
+    margin-inline: 0;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 16rem;
-    align-items: start;
+    grid-template-columns: minmax(0, 1fr) 13rem;
     gap: 0 2rem;
+    /* Default `stretch`, not `start`: the info column needs the artifact's
+       full height to push its CTA to the bottom rather than leaving it
+       floating above a dead gap the height of the gallery strip. */
+  }
+  .case-art-info {
+    display: flex;
+    flex-direction: column;
   }
   .case-art .case-facts {
     margin-top: 0;
     border-top: 0;
+  }
+  /* Promoted from the band below into the column: at this height the info
+     side is far shorter than the artifact it stands beside, and the CTA
+     fills that leftover space instead of leaving it empty. `margin-top: auto`
+     only pushes when the flex column is actually stretched taller than its
+     content, so this is a no-op at every other breakpoint. */
+  .case-art .case-cta--column {
+    display: block;
+    margin-top: auto;
+  }
+  .case-cta--band {
+    display: none;
+  }
+  /* Below the split, `.case-body` inherits the global 40rem prose measure
+     with no `margin-inline`, which left it hugging the shell's left edge
+     while the artifact above it (now uncapped) ran the full tablet width —
+     a narrow column stranded under a wide one. Widening and centering it
+     here only: the 40rem measure stays the tuned default at desktop, where
+     it already matches the split's own grid track, and at mobile, where the
+     shell is narrow enough that the difference does not read. */
+  .case-body {
+    max-width: 48rem;
+    margin-inline: auto;
   }
 }
 

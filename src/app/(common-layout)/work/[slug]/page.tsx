@@ -117,7 +117,7 @@ export default async function PortfolioPage({
 
   return (
     <ModalContextProvider>
-      <div className="case-shell">
+      <div className={`case-shell${mainImage ? ' case-shell--split' : ''}`}>
       <nav aria-label="Breadcrumb" className="mb-6">
         <Link
           href="/work"
@@ -149,12 +149,18 @@ export default async function PortfolioPage({
         {mainImage && (
           <aside className="case-art">
             <CaseArtifact title={title} slides={slides} />
-            <CaseFacts services={servicesList} publicUrl={publicUrl} />
 
-            {/* The one solid green in the column, and the only thing in it set
-                in a heading role — it has to read as an offer, not another
-                row of the caption above it. */}
-            <CaseCta where="column" />
+            {/* Grouped so the tablet split (48rem–72rem) can stretch this pair
+                to the artifact's height and pin the CTA to the bottom of it,
+                instead of leaving the facts stranded above a dead gap. */}
+            <div className="case-art-info">
+              <CaseFacts services={servicesList} publicUrl={publicUrl} />
+
+              {/* The one solid green in the column, and the only thing in it
+                  set in a heading role — it has to read as an offer, not
+                  another row of the caption above it. */}
+              <CaseCta where="column" />
+            </div>
           </aside>
         )}
 
